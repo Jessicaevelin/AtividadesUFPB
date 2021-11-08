@@ -1,0 +1,1 @@
+"0","sinistro <- read.csv(""sinistros.csv"", header = TRUE, sep="","")"

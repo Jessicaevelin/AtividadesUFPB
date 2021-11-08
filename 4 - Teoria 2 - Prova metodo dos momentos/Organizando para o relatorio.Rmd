@@ -1,0 +1,146 @@
+---
+title: "Script para o relatorio v.1"
+author: "Jessica"
+date: "18/09/2019"
+output: html_document
+---
+
+Importando os dados
+```{r}
+dados <- read.delim("D:/Google Drive/2 - Ufpb/P5/Teoria/Prova/dados.txt")
+dados
+```
+#
+#
+# X~gama (a,b) #
+#
+#
+
+$$
+X - Gama(\alpha,\beta)
+$$
+
+$$
+E[x]=a/b
+$$
+$$
+V[x]=a/b^2
+$$
+```{r}
+S <- sum(dados$x)
+S
+```
+
+
+```{r}
+Ex <- mean(dados$x)
+Vx <- var(dados$x)
+Dpx <- sd(dados$x)
+CVx <- Dpx / Ex
+```
+#
+#
+#
+Média de X
+```{r}
+Ex
+```
+Variância de X
+```{r}
+Vx
+```
+Desvio Padrão de X
+```{r}
+Dpx
+```
+Coeficiente de Variação de X
+```{r}
+CVx
+```
+#
+#
+# N~Binomial Negativa (r,pb) #
+#
+#
+$$
+E[N]=(rq)/p
+$$
+
+$$
+V[N]=(rq)/p^2
+$$
+```{r}
+En <- mean(dados$n)
+Vn <- var(dados$n)
+Dpn <- sd(dados$n)
+CVn <- Dpn / En
+```
+#
+#
+#
+Média de N
+```{r}
+En
+```
+Variância de N
+```{r}
+Vn
+```
+Desvio Padrão de N
+```{r}
+Dpn
+```
+Coeficiente de Variação de N
+```{r}
+CVn
+```
+#
+#
+# S~Binomial Negativa Composta #
+#
+#
+```{r}
+Es <- (En*Ex)
+Vs <- (En*Vx)+(Ex)^2*Vn
+Ds <- sqrt(Vs)
+CVs <- Ds/Es
+```
+#
+#
+#
+Média de S
+```{r}
+Es
+```
+Variancia de S
+```{r}
+Vs
+```
+Desvio Padrão de s
+```{r}
+Ds
+```
+Coeficiente de Variação de S
+```{r}
+CVs
+```
+#
+#
+#
+Premio Puro com 1% de nivel de significancia
+```{r}
+PP1 = Es+qnorm(1-0.01)*Ds
+PP1
+```
+Premio Puro com 5% de nivel de significancia
+```{r}
+PP5 = Es+qnorm(1-0.05)*Ds
+PP5
+```
+Premio Puro com 10% de nivel de significancia
+```{r}
+PP10 = Es+qnorm(1-0.10)*Ds
+PP10
+```
+
+

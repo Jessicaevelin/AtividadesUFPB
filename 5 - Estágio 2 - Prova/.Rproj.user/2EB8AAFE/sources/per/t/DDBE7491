@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583544385280.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2708179160",
+    "id" : "DDBE7491",
+    "lastKnownWriteTime" : 1583546182,
+    "last_content_update" : 1583546182298,
+    "path" : "D:/Google Drive/6 - R/5 - Estágio 2 - Prova/Script/Script_Base.Rmd",
+    "project_path" : "Script/Script_Base.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "153,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

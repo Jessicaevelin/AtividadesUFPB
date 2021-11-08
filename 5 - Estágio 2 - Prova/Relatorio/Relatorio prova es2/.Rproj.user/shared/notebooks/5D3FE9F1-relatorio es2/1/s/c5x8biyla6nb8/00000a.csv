@@ -1,0 +1,4 @@
+"0","#analisar qual distribuição se parece com o histograma dos dados:"
+"0","par(mfrow=c(2,2))"
+"0","plot.legend <- c(""Normal"", ""Gamma"", ""Lognormal"", ""Weibull"", ""Pareto"")"
+"0","denscomp(list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), legendtext = plot.legend)"

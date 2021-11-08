@@ -1,0 +1,1 @@
+"0","curve(dpareto(x, fit.pareto$estimate[1], fit.pareto$estimate[2]), add = TRUE, col = ""green"")"

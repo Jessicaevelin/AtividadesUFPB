@@ -1,0 +1,4 @@
+"0","set.seed(12)"
+"0","t <- 200"
+"0","y1 <- ts(cumsum(rnorm(t)))"
+"0","y2 <- rnorm(t)"

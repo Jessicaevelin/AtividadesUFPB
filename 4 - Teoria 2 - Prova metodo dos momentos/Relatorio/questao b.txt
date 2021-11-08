@@ -1,0 +1,77 @@
+Importando os dados
+```{r}
+dados <- read.delim("D:/Google Drive/2 - Ufpb/P5/Teoria/Prova/dados.txt")
+dados
+```
+
+#Metodo dos momentos#
+
+$$
+X - Gama(\alpha,\beta)
+$$
+
+
+Extraindo a média (m1) e a variancia (m3) da severidade (X):
+
+```{r}
+Ex <- mean(dados$x)
+Ex
+Vx <- var(dados$x)
+Vx
+```
+
+Criando os objetos m1, m2 e m3:
+
+```{r}
+m1 = c()
+m2 = c()
+m3 = c()
+```
+
+**Ex = m1**
+
+**Ex^2 = m2**
+
+**Variancia = m3 = (m2-m1^2)**
+
+```{r}
+m1 <- Ex
+m1
+```
+
+```{r}
+m3 <- Vx
+m3
+```
+
+Parametros da distribuição pela formula dos momentos de gama
+
+$$
+\alpha=m_1^2/(m_2-m_1^2)
+$$
+
+$$
+\beta=m_1/(m_2-m_1^2)
+$$
+
+**Alfa pelo metodo dos momentos (A)**
+
+```{r}
+A = ((m1)^2)/m3
+A
+```
+
+**Beta pelo metodo dos momentos (B)**
+
+```{r}
+B = m1/m3
+B
+```
+
+
+---
+---
+---
+$$
+
+$$

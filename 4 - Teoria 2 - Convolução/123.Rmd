@@ -1,0 +1,17 @@
+---
+title: "Convolução - exemplo1 - pag 37 - ferreira 2002"
+pacote: actuar 
+editor_options: 
+  chunk_output_type: console
+---
+
+o pacote e a função (aggregateDist)
+```{r}
+require(actuar)
+```
+método de convolução
+probabilidades discretas de X
+```{r}
+fx <- c(0, 0.6, 0.3, 0.1)
+```
+

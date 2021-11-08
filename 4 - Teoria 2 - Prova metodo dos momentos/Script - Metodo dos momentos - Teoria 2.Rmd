@@ -1,0 +1,530 @@
+---
+title: "Relatório de Teoria - Script "
+output:
+  html_document:
+    df_print: paged
+---
+# Metodo #
+
+Para estimação da distribuição foi utilizado o método:
+
+**Paramétrico**  
+
+Esse método é utilizado para poucas observações. É atribuido a ele uma distribuição conhecida (distribuição teórica)
+
+**Não Paramétrico**
+
+Esse método é utilizado para um grande número de observações. Nesse caso aplicamos uma distribuição empírica.
+
+
+
+
+
+
+**Organizando o banco de dados**
+```{r}
+setwd("D:/Google Drive/2 - Ufpb/P5/Teoria/Prova/")
+```
+
+```{r}
+#transformando dados em uma lista de tamanho 12.
+
+dados=list()
+length(dados)=12
+for(i in 1:12){
+  dados[[i]]=read.csv(paste("grupo4am",i,".csv",sep=""))
+}
+#S é uma lista numerica com 12 informações
+S=c()
+N=c()
+N=numeric(12)
+S=numeric(12)
+```
+
+```{r eval=FALSE, include=FALSE}
+#visualizando as listas
+dados
+
+#Para encontrar resultados mensais
+
+N[i]=dim(dados[[i]][1,])
+S[i]=sum(dados[[i]][,2])
+```
+
+#
+#
+#
+#
+#
+
+## Respostas da Letra A ##
+
+**Separando as informações**
+
+    Começando pela análise do banco de dados, este é formado por 455 observações onde encontramos os valores da severidade da carteira (x) e da frequência dos sinistros.
+
+  **Severidade = X**
+```{r}
+#Criando um objeto apenas para a severidade
+
+x <-c((dados[[1]][,2]),(0), (dados[[3]][,2]), (dados[[4]][,2]), (dados[[5]][,2]), (dados[[6]][,2]), (dados[[7]][,2]), (dados[[8]][,2]), (dados[[9]][,2]), (dados[[10]][,2]), (dados[[11]][,2]), (dados[[12]][,2]))
+```
+
+  **Frequencia = n**
+```{r}
+#Criando um objeto apenas para a frequência
+
+n <-c((dados[[1]][,1]), (dados[[2]][,1]), (dados[[3]][,1]), (dados[[4]][,1]), (dados[[5]][,1]), (dados[[6]][,1]), (dados[[7]][,1]), (dados[[8]][,1]), (dados[[9]][,1]), (dados[[10]][,1]), (dados[[11]][,1]), (dados[[12]][,1]))
+```
+
+**Histogramas**
+
+```{r}
+#analisando o histograma é possivel ver que os dados não tem forma normal.
+hist(n)
+```
+    O histograma do número de sinistros(n) ocorridos em 1 ano mostra que os dados estão concentrados na parte esquerda do gráfico, ou seja, a carteira da seguradora hipotética é mais frequente acontecerem uma quantidade  sinistros entre 0 e 40 por ano
+
+```{r}
+hist(x)
+```
+    O histograma da severidade  que é do valor de cada sinistro na carteira se concentra nos valores acima de $ 90.000 então podemos interpretar que para essa carteira o valor mínimo a ser pago é de $ 90.000.
+
+
+**Severidade da Carteira**
+
+
+```{r}
+#Dados[[1]][,2] = Primeiro da lista, segunda coluna
+
+S=sum((dados[[1]][,2]), (dados[[3]][,2]), (dados[[4]][,2]), (dados[[5]][,2]), (dados[[6]][,2]), (dados[[7]][,2]), (dados[[8]][,2]), (dados[[9]][,2]), (dados[[10]][,2]), (dados[[11]][,2]), (dados[[12]][,2]))
+S
+```
+
+```{r}
+Ex <- mean(x)
+Vx <- var(x)
+Dpx <- sd(x)
+CVx <- Dpx / Ex
+```
+
+```{r}
+Ex   #Média dos valores de x
+Vx   #Variancia dos valores de x
+Dpx   #Desvio padrão dos valores de x
+CVx   #Coeficiente de variação de x
+```
+   O valor médio pago é de $ 99780.44, esses valores estão dispersos $ 21978146, estão dispersos da média $ 4688.086 e a medida de variabilidade da média é de 4%.
+
+
+
+**Frequência observada da carteira**
+
+```{r}
+En <- mean(n)
+Vn <- var(n)
+Dpn <- sd(n)
+CVn <- Dpn / En
+```
+
+```{r}
+En   #Média dos valores de n
+Vn   #Variancia dos valores de n
+Dpn   #Desvio padrão dos valores de n
+CVn   #Coeficiente de variação de s
+```
+    A quantidade média de sinistros ocorridos é 34.6, a variância que é quanto os valores estão dispersos do valor esperado é de 740.9, o desvio padrão é uma medida de dispersão em relação a média para esses dados ele é de 27.2 e o coeficiente de variação é de 78% mede a extensão da variabilidade em relação à média.
+
+
+**Sinistro Agregado**
+
+    E[Scol] = E[N]*E[X] 
+  
+    V[Scol] = V[X]*E[N] + E[X]2 *V[N]`
+  
+```{r}
+Es <- (En*Ex)
+Vs <- (En*Vx)+(Ex)^2*Vn
+Ds <- sqrt(Vs)
+CVs <- Ds/Es
+```
+
+```{r}
+Es   #Média dos valores de S
+Vs   #Variancia dos valores de S
+Ds   #Desvio padrão dos valores de S
+CVs   #Desvio padrão dos valores de S
+```
+    O Sinistro Agregado é a indenização total da carteira em um ano então de acordo com os dados acima o valor esperado de indenizações e de $ 3452184, a variância é de 7.37, o desvio padrão 2716155 e a medida de variabilidade da média é de 78%.
+
+
+
+**Prêmio Puro com 1% de nivel de significância**
+
+  Pp=E[s]+Z(1-a)*DesvioS
+  
+```{r}
+#qnorm retorna o Z(1-a)
+
+PP1 = Es+qnorm(1-0.01)*Ds
+PP5 = Es+qnorm(1-0.05)*Ds
+PP10 = Es+qnorm(1-0.10)*Ds
+
+```
+
+```{r}
+PP1   #Prêmio puro com 1% de significância
+PP5   #Prêmio puro com 5% de significância
+PP10   #Prêmio puro com 10% de significância
+```
+    Calculo do Prêmio Puro quando S tem distribuição que se aproxima da Normal 
+
+
+
+**Prêmio Puro pela fórmula**
+
+  teta = (Z(1-a)*DesvioS)/Es
+  
+  Pp = E[s]*(1+teta) 
+  
+```{r}
+#Carregamentos para 1%, 5%, 10% de significância
+
+teta1=((qnorm(1-0.01)*Ds)/Es)
+teta5=((qnorm(1-0.05)*Ds)/Es)
+teta10=((qnorm(1-0.1)*Ds)/Es)
+
+```
+
+```{r}
+teta1   #Carregamento com 1% de significância
+teta5   #Carregamento com 5% de significância
+teta10   #Carregamento com 10% de significância
+```
+
+```{r}
+#Premio puro para 1%, 5%, 10% de significância
+
+Pp1 = Es*(1+teta1)
+Pp5 = Es*(1+teta5)
+Pp10 = Es*(1+teta10)
+```
+
+```{r}
+Pp1   #Prêmio puro com 1% de significância
+Pp5   #Prêmio puro com 5% de significância
+Pp10   #Prêmio puro com 10% de significância
+```
+    Foram feitos 3 cálculos para diferentes níveis de significância 1%, 5% e 10% e isto afeta diretamente o valor de Ɵ.
+#
+#
+#
+#
+#
+
+## Respostas da Letra B ##
+
+**Parâmetros r, p da binomial**
+
+```{r}
+p = En/Vn
+r = (En*p)/(1-p)
+p
+r
+```
+
+
+
+**Parâmetros a e b pelo metodos do momentos**
+
+```{r}
+#Transformando a media e variância em m1 e m3
+m1 <- Ex
+m3 <- Vx
+```
+
+```{r}
+a = ((m1)^2)/m3
+b = m1/m3
+b
+a
+```
+
+
+
+**Gerando N aleatoriamente**
+
+```{r}
+#rnbinom cria valores diacordo com o tamanho e os parametros encontrados.
+nb = rnbinom(500, r, p)
+nb
+```
+
+**Gerando um X e S que dependem de N aleatorio.**
+
+```{r}
+#Criando um Sb que depende do Nb do ambiente anterior, onde Xb segue uma gamma aleatoria de tamanho n, e parametros a e b.
+Sb=numeric(500)
+for(i in 1:500){
+  xb = rgamma(nb[i], a, b)
+  Sb = sum(xb)
+}
+Sb
+```
+
+
+**Refazendo o prêmio puro com o novo banco de dados:**
+
+
+**Severidade da Carteira B**
+
+```{r}
+xb   #Severidade B
+Sb   #Sinistro Agregado B
+```
+
+```{r}
+Exb <- mean(xb)
+Vxb <- var(xb)
+Dpxb <- sd(xb)
+CVxb <- Dpxb / Exb
+```
+
+```{r}
+Exb   #Média dos valores de xb
+Vxb   #Variancia dos valores de xb
+Dpxb   #Desvio padrão dos valores de xb
+CVxb  #Coeficiente de variação de xb
+```
+
+
+
+**Frequência observada da carteira B**
+
+```{r}
+Enb <- mean(nb)
+Vnb <- var(nb)
+Dpnb <- sd(nb)
+CVnb <- Dpnb / Enb
+```
+
+```{r}
+Enb   #Média dos valores de nb
+Vnb   #Variancia dos valores de nb
+Dpnb   #Desvio padrão dos valores de nb
+CVnb   #Coeficiente de variação de nb
+```
+
+
+
+**Sinistro Agregado B**
+
+    E[Scol] = E[N]*E[X] 
+  
+    V[Scol] = V[X]*E[N] + E[X]2 *V[N]`
+  
+```{r}
+Esb <- (Enb*Exb)
+Vsb <- (Enb*Vxb)+(Exb)^2*Vnb
+Dsb <- sqrt(Vsb)
+CVsb <- Dsb/Esb
+```
+
+```{r}
+Esb   #Média dos valores de Sb
+Vsb  #Variancia dos valores de Sb
+Dsb   #Desvio padrão dos valores de Sb
+CVsb   #Desvio padrão dos valores de Sb
+```
+
+
+
+**Prêmio Puro com 1% de nivel de significância B**
+
+    #qnorm retorna o Z(1-a)
+   
+    Pp=E[s]+Z(1-a)*DesvioS
+   
+```{r}
+PPb1 = Esb+qnorm(1-0.01)*Dsb
+PPb5 = Esb+qnorm(1-0.05)*Dsb
+PPb10 = Esb+qnorm(1-0.10)*Dsb
+
+```
+
+```{r}
+PPb1   #Prêmio puro com 1% de significância
+PPb5   #Prêmio puro com 5% de significância
+PPb10   #Prêmio puro com 10% de significância
+```
+
+
+
+
+**Prêmio Puro pela fórmula B**
+
+  teta = (Z(1-a)*DesvioS)/Es
+  
+  Pp = E[s]*(1+teta) 
+  
+```{r}
+#Carregamentos para 1%, 5%, 10% de significância
+
+tetab1=((qnorm(1-0.01)*Dsb)/Esb)
+tetab5=((qnorm(1-0.05)*Dsb)/Esb)
+tetab10=((qnorm(1-0.1)*Dsb)/Esb)
+
+```
+
+```{r}
+tetab1   #Carregamento com 1% de significância
+tetab5   #Carregamento com 5% de significância
+tetab10   #Carregamento com 10% de significância
+```
+
+```{r}
+#Premio puro para 1%, 5%, 10% de significância
+
+Ppb1 = Esb*(1+tetab1)
+Ppb5 = Esb*(1+tetab5)
+Ppb10 = Esb*(1+tetab10)
+```
+
+```{r}
+Ppb1   #Prêmio puro com 1% de significância
+Ppb5   #Prêmio puro com 5% de significância
+Ppb10   #Prêmio puro com 10% de significância
+```
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+## Testes ##
+
+
+
+**Teste de Normalidade**
+Usando a função shapiro.test() temos a informação se a variável tem características de uma distribuição normal. Para esse teste se (W < p-value) então rejeitamos a hipótese nula, ou seja, o objeto não segue distribuição normal.
+
+```{r}
+#não sei se faz sentido fazer o testes de normalidade para a severidade
+shapiro.test(n)   #teste para a frequência da letra a
+shapiro.test(nb)   #teste para a frequência da letra b
+shapiro.test(x)   #teste para a severidade da letra a
+shapiro.test(xb)  #teste para a severidade da letra b
+```
+
+**Histogramas de nb e xb**
+
+```{r}
+hist(nb)
+hist(xb)
+```
+
+
+
+**TesteS de Aderência**
+O teste ks observa a máxima diferênça absoluta entre a função de distribuição teórica e a  função de distribuição empírica. Sua hipótese nula é que os dados seguem uma distribuição escolhida (No nosso exemplo, Gamma ou Binomial). Já a hipótese alternativa é que os dados não seguem a distribuição escolhhida. 
+Quanto menor for a estatística de D, mais próxima da distribuição teórica assumida, está a distrinuição empírica.
+
+**Para a Severidade**
+```{r}
+ks.test(x, "pgamma", a, b)
+ks.test(xb, "pgamma", a, b)
+```
+**Para a Frequência**
+```{r}
+ks.test(n, "rnbinom", r, p)
+ks.test(nb, "rnbinom", r, p)
+```
+
+#
+#
+#
+#
+#
+
+$$
+Pp= E[S]*(1+θ)
+$$
+ 
+$$
+E[X]= ∑ x*p(x)
+$$
+
+$$
+E[X]=bα/β𝛽𝛽
+$$
+
+$$
+V[X]= α/(β^2)
+$$
+
+$$
+E[X^2]=∑ (x^2)*p(x)
+$$
+
+$$
+V[X]= E[X^2]-{E[X]^2}
+$$
+
+$$
+Dp[X]= √(v[x])
+$$
+
+$$
+Cv[X]= (Dp[x])/(E[x])  
+$$
+
+$$
+E[N]= (r*q)/p
+$$
+
+$$
+V[N]= (r*q)/(p^2)
+$$
+
+$$
+Dp(N)= √(v[N]) 
+$$
+
+$$
+Cv[N]=(Dp[N])/(E[N])  
+$$
+
+$$
+E[Scol] = E[N]*E[X] 
+$$
+
+$$
+V[Scol] = V[X]*E[N] + E[X]2 *V[N] 
+$$
+
+$$
+Dp[Scol]= √(V[Scol]) 
+$$  
+
+$$
+Cv[Scol]=(Dp[S])/(E[S])
+$$
+
+$$
+p = En/Vn
+$$    
+
+$$
+r = (En*p)/(1-p)
+$$    
+
+
+

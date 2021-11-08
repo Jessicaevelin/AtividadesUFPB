@@ -1,0 +1,437 @@
+---
+title: "Estágio Supervisionado II"
+output:
+  html_document:
+    df_print: paged
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Aula 2
+
+Nesta aula veremos as operações condicionais, como criar funções e as distribuições de frequência e severidade.
+
+## Operações Condicionais
+
+Os operadores de comparação são:
+
+* Igualdade: ==
+* Não igual: !=
+* Menor: <
+* Maior: >
+* Menor ou igual: <=
+* Maior ou igual: >=
+
+Operadores lógicos são:
+
+* E: &
+* Ou: |
+
+A partir desses operadores, utilizaremos a função `if()` para avaliar as condições lógicas.
+
+A sintaxe de uma operação lógica pode ser expressa a partir dessa função `if()`, em que o seu argumento será a condição com operadores de comparação e/ou lógicos. 
+
+Se quiser rodar um determinado código apenas se a condição for verdadeira e se a condição for falsa, queremos que nada seja feito, então:
+
+if (condição) {
+    comandos a serem executados caso a codição seja verdadeira
+}
+
+Exemplo: Imprima (use a função `paste()`) o valor da variável **C** se o seu valor for menor do que 10:
+```{r}
+# testando C = 7
+C <- 7
+if(C<10){
+  paste(C)
+}
+# testando C = 12
+C <- 12
+if(C<10){
+  paste(C)
+}
+C <- 1
+```
+
+Perceba que ao atribuir o valor 12 à C, nada acontece. Isso ocorre porque a condição (C<10) não foi verdadeira. 
+
+Esse tipo de operação não é muito comum na prática, na verdade você gostaria que algo fosse realizado quando a condição não fosse verdadeira. Neste caso, utiliza-se a operação `else` após a chave "}" da função `if()`. Por exemplo, no exemplo anterior caso a condição não seja verificada, peça para imprimir a frase: "O valor de C é maior ou igual a 10!":
+
+```{r}
+C <- 12
+if(C<10){
+  paste(C)
+}else{
+  paste("O valor de C é maior ou igual a 10!")
+}
+```
+
+Vamos utilizar outros operadores de comparação. Escreva um código que escreve o valor de **D** se ele for igual a 5. Se o valor de **D** for diferente de 5, imprima: "tente outra vez!"
+
+```{r}
+D <- 5
+if(D == 5){
+  paste(D)
+}else{
+  paste("tente outra vez!")
+}
+
+D <- 6
+if(D == 5){
+  paste(D)
+}else{
+  paste("tente outra vez!")
+}
+
+```
+
+Quando desejar utilizar algum operador lógico, se você desejar que duas condições sejam verdadeiras, utilize e `&`, ao passo que quando desejar que pelo menos uma seja verdadeira, use `|`. Veremos abaixo como aplicar esse operadores ao criar um teste que se **C** for igual a 7 e **D** for igual a 5, o programa imprimirá ambos os valores com um "verdadeiro" em seguida. Se pelo menos uma das condições não forem verdadeiras, imprima os valores e "falso" em seguida. 
+
+```{r}
+C <- 7
+D <- 5
+if(C==7 & D==5){
+  paste("C =",C," e ","D =",D," ","verdadeiro")
+}else{
+  paste("C =",C," e ","D =",D," ","falso")
+}
+# testar falso
+C <- 6
+if(C==7 & D==5){
+  paste("C =",C," e ","D =",D," ","verdadeiro")
+}else{
+  paste("C =",C," e ","D =",D," ","falso")
+}
+
+```
+
+Agora, faça a mesma função sendo que substitua o operador `&` pelo `|`. Dessa forma, a condição só será falsa se ambos os valores forem diferentes.
+
+```{r}
+
+```
+
+
+Faça agora um teste com dois valores **A** e **B** recebendo 4 e 3, respectivamente e avalia se **A** for diferente de **B** e maior do que 3, o programa vai imprimir uma mensagem: "o valor está correto!". Caso contrário, ele imprime a mensagem: "não foi desta vez!".
+
+```{r}
+
+```
+
+
+## Criando Funções
+
+Uma função serve para que possamos automatizar os cálculos. Toda vez que você se deparar com algum problema em que será necessária a utilização repetidamente de um cálculo ou uma certa tarefa, crie uma função para automatizar o procedimento. 
+
+Para se criar uma função, basta atribuir um nome a sua função e utilizar a função `function()` com os parâmetros necessários. Por exemplo, vamos criar uma função que recebe dois valores, x1 e x2, e calcula o produto deles. 
+
+```{r}
+# criando a função
+minha_funcao <- function(x1, x2){
+  return(x1 * x2)
+}
+
+# vamos testar
+minha_funcao(x1 = 20, x2 = 2)
+minha_funcao(20,4)
+```
+
+Agora é sua vez, crie uma função que recebe dois valores e imprime o maior. 
+
+```{r}
+func <- function(x,y){
+  if(x>=y){
+    return(x)
+  }else{
+    return(y)
+  }
+}
+func(10,20)
+```
+
+Escreva uma função que calcula o valor presente (desconto financeiro) ao receber um valor futuro, uma taxa de juros e um período.
+
+```{r}
+vp <- function(v, i, t){
+  return(v/(1+i)^t)
+}
+
+vp(1, 0.06, 1)
+```
+
+Faça agora uma função que calcula a média de um vetor e imprime "A média é `media_calculada`". Utilize a função `sum()` que soma os valores e a função `length()` que diz a quantidade de elementos do vetor. 
+
+```{r}
+media <- function(x){
+  media_calculada <- sum(x)/length(x)
+  paste("A média é", round(media_calculada,4))
+}
+media(c(1, 2, 7, 2, 5, 7, 1, 7, 9))
+
+class(media(rnorm(100, 5, 3)))
+```
+
+Por fim, Escreva uma função que recebe um vetor e se a soma do vetor for maior do que zero e menor do que 1000, ele calcula e retorna a quantidade de elementos, a média e o desvio-padrão. Caso contrário, ele imprime a mensagem: "o valor está fora dos parâmetros exigidos."
+
+```{r}
+funcao <- function(x){
+  if(sum(x) > 0 & sum(x) < 1000){
+    return(c(length(x), mean(x), sd(x)))
+  }else{
+    return(paste("o valor está fora dos parâmetros exigidos."))
+  }
+}
+
+funcao(seq(1,10))
+funcao(c(5, 100, 40, 30))
+funcao(rnorm(150, 5, 1))
+```
+
+## Distribuições de Sinistros
+
+### Frequência (N)
+
+As distribuições discretas mais comuns que modelam a variável **Frequência de Sinistros** são:
+
+* Poisson
+* Binomial Negativa
+* Geométrica
+
+#### Distribuição de Poisson
+
+A distribuição de Poisson só possui um parâmetros que é o $\lambda$. Uma propriedade interessante da Poisson é que o valor esperado é igual à variância, sendo ambas o valor de $\lambda$. 
+
+Para calcular no `R` a probabilidade de **N** assumir algum valor **n**, basta utilizar a função `dpois()`, em que o primeiro argumento representa **n**, e o segundo o seu parâmetro lambda. 
+
+Calcule a probabilidade de N ser igual a 3 para uma distribuição Poisson com lambda = 2:
+
+```{r}
+dpois(x=3,lambda=2)
+```
+
+
+```{r}
+# P(N=10)
+dpois(10, 2)
+```
+
+Se desejar calcular a probabilidade acumulada, utilize a função `ppois()`. Calcule a probabilidade de **N** ser menor ou igual a 3, para a distribuição do exemplo anterior:
+
+```{r}
+# P(N<=3)
+ppois(q=3, lambda=2)
+
+# P(N>3)
+1 - ppois(q = 3, lambda = 2)
+```
+
+Sua vez: Calcule a probabilidade da quantidade de sinistros ser maior do que 10 para a distribuição do exemplo anterior:
+
+```{r}
+1-ppois(10,2)
+```
+
+Se o objetivo for calcular o valor do quantil a partir de uma dada probabilidade, utilize a função `qpois()`, em que o primeiro argumento da função será a probabilidade. Por exemplo, qual a quantidade de sinistro quando a probablidade de N ser menor do que n é de 90%? 
+
+```{r}
+qpois(p = 0.9, lambda = 2)
+```
+
+
+#### Distribuição Binomial Negativa
+
+A distribuição Binomial Negativa possui dois parâmetros, **r** e **p** que representam, respectivamente, a quantidade de sucessos e a probabilidade de sucesso. O seu valor esperado é: $E[N] = \frac{r(1-p)}{p}$, enquanto a variância, $V[N] = \frac{r(1-p)}{p^2}$.
+
+Para calcular no `R` a probabilidade de **N** assumir algum valor **n**, basta utilizar a função `dnbinom()`, em que o primeiro argumento representa **n**, o segundo representa o **r**, e o terceiro a probabilidade de sucesso **p**.
+
+Calcule a probabilidade de N ser igual a 3 para uma distribuição Binomial Negativa com r = 10 e p = 0,8:
+
+```{r}
+dnbinom(x=3,size=10,prob=0.8)
+
+dnbinom(x = 10, size = 10, prob = 0.8)
+```
+
+Se desejar calcular a probabilidade acumulada, utilize a função `pnbinom()`. Calcule a probabilidade de **N** ser menor ou igual a 3, para a distribuição do exemplo anterior:
+
+```{r}
+pnbinom(q=3,size=10,prob = 0.8)
+```
+
+Sua vez: Calcule a probabilidade de N ser maior do que 4, utilizando-se das informações do exemplo acima.
+
+```{r}
+1 - pnbinom(q = 4, size = 10, prob = 0.8)
+```
+
+Para calcular o quantil, a partir da probabilidade, utilize a função `qnbinom()`. 
+
+Sua vez: Calcule a quantidade de sinistros n de tal maneira que a probabilidade de N ser maior do que n é de 0.2:
+
+```{r}
+qnbinom(p = 0.2, size = 10, prob = 0.8)
+
+```
+
+
+#### Distribuição Geométrica
+
+É um caso especial da binomial negativa quando **r** é igual a 1. 
+
+### Severidade (X)
+
+As distribuições discretas mais comuns que modelam a variável **Severidade** ou **Valor de 1 sinistro** são:
+
+* Gama
+* Log-Normal
+* Pareto *
+* Weibull
+
+#### Distribuição Gama
+
+A distribuição Gama é da família das distribuições contínuas de dois parametros. Ela é usada para modelar variáveis de valores positivos que possuem assimetria positiva. Sendo assim, a distribuição Gama é normalmente utilizada para representar os valores dos Sinistros ou empregada em Estudos de Sobrevivência. 
+
+Os seus parâmetros são de forma ($\alpha$) e de escala inversa ($\beta$).
+
+Para calcular no `R` a probabilidade de **X** assumir algum valor **x**, basta utilizar a função `dgamma()`, em que o primeiro argumento representa **x**, o segundo sendo o parâmetro de forma $\alpha$ e o parâmetro de escala $\beta$. 
+
+O valor esperado da distribuição gama é: $$E[X] = \frac{\alpha}{\beta}$$
+
+A variância é: $$V[X] = \frac{\alpha}{\beta^2}$$
+
+Dessa forma, calcule a probabilidade de x ser igual a $1000$ para uma distribuição $GAMA(3,0.001)$:
+
+```{r}
+dgamma(x = 1000, shape = 3, rate = 0.001)
+```
+
+Se desejar calcular a probabilidade acumulada, utilize a função `pgamma()`. Calcule a probabilidade de **X** ser menor ou igual a 1000, para a distribuição do exemplo anterior:
+
+```{r}
+pgamma(q = 1000, shape = 3, rate = 0.001)
+```
+
+Sua vez: Calcule a probabilidade de um sinistro superar 10000 para a distribuição do exemplo anterior:
+
+```{r}
+1-pgamma(10000,shape = 3, rate = 0.001)
+
+```
+
+Para calcular o quantil a partir da probabilidade, use a função `qgamma()`. 
+
+Sua vez: Qual o valor do sinistro uma vez que a probabilidade de X ser menor do que x é de 0.9, seguindo a mesma distribuição acima:
+
+```{r}
+
+```
+
+
+
+#### Distribuição Log-Normal
+
+A variável aleatóriatem distribuição Log-Normal ($X$) quando seu logaritmo natural tem distribuição Normal $Y = ln(X)$.
+
+
+Então, dada uma distribuição Log-Normal $X$ com $\mu$ sendo a média e $\sigma$ o seu desvio-padrão, o Logaritmo de $X$ é distribuido normalmente, como segue:
+
+$$
+X = e^{\mu + Z\sigma}
+$$
+em que $Z$ é a variável normal padrão. 
+
+Sua função de densidade é:
+
+$$
+f(x;\mu, \sigma) = \frac{1}{x\sigma\sqrt{2\pi}}exp\bigg[{-\frac{(ln(x)-\mu)^2}{2\sigma^2}}\bigg]
+$$
+
+O valor esperado de $X$ (log-Normal) $X = e^Y$, quando $Y$ é uma variável aleatória normal é:
+
+$$
+E[X] = E[e^Y] = e^{(E[Y] + \frac{1}{2}Var[Y])}
+$$
+
+A variância de $X$ (Log-Normal) pode ser expressa em função da Normal ($Y$), sendo $X = exp(Y)$:
+
+$$ 
+Var[X] = e^{(2E[Y]+Var[Y])(e^{(Var[Y])-1})}
+$$
+
+Para calcular a probabilidade de X ser igual a algum valor, utilize a função `dlnorm()`, em que temos o parâmetro $\mu$ e $\sigma$. Por exemplo, calcule a probabilidade, a partir de uma distribuição Log-Normal$(\mu = 5, \sigma = 3)$, de X ser menor do que 1000:
+
+```{r}
+dlnorm(x = 1000, meanlog = 5, sdlog = 3)
+```
+
+Para calcular a probabilidade acumulada, utilize a função `plnorm()`.
+
+Sua vez: Calcule a probabilidade de X ser maior do que 1000 e menor do que 2000, utilizando-se da mesma distribuição do exemplo anterior:
+
+```{r}
+
+
+```
+
+Ainda: Calcule a probabilidade de X estar entre 1500 e 800, utilizando a distribuição Log-Normal com $\mu = 4$ e $\sigma = 2.8$:
+
+```{r}
+
+
+```
+
+
+A função para calcular o quantil, para uma distribuição Log-Normal é `qlnorm()`.
+
+Sua vez: Qual o valor do sinistro x a uma probabilidade de 85%, para uma distribuição Log-Normal com parâmetros $\mu = 6$ e $\sigma = 2.2$?
+
+```{r}
+
+```
+
+
+#### Distribuição Weibull
+
+A distribuição Weibull é normalmente utilizada em análise de sobrevivência e possui dois parâmetros ($\lambda, k$). De uma forma geral, suas aplicações objetivam determinar o tempo de vida médio e a taxa de falhas em função do tempo da população analisada. Além disso, é utilizada para modelar a distribuição "Valor de 1 sinistro" ou Severidade, uma vez que é assume apenas valores positivos. 
+
+A função de densidade da distribuição Weibull para $x \ge 0$ é dada por:
+
+$$
+f(x;\lambda,k) = \frac{k}{\lambda}\bigg(\frac{x}{\lambda}\bigg)^{k-1}e^{-(x/\lambda)^k}
+$$
+
+Em que, $\lambda$ está definido de 0 a $+\infty$, é medido na mesma unidade que $x$ e é denominado de parâmetro de escala. "*Do ponto de vista estatístico λ é determinado parâmetro de escala pois variações no seu valor enquanto k é mantido constante causam a compressão ou expansão do gráfico*" (https://pt.wikipedia.org/wiki/Distribui%C3%A7%C3%A3o_de_Weibull).
+
+Ademais, o parâmetro k está definido de 0 a + $\infty$ e é adimensional. Do ponto de vista estatístico k é o parâmetro de forma. "*Variações no valor de k alteram drasticamente o comportamento da distribuição. Para k<1, o fator exponencial da distribuição é predominante e a curva fica em um formato de J e para k=1 a distribuição se reduz a uma distribuição exponencial. Para k>1 o fator polinomial da distribuição é predominante*" (https://pt.wikipedia.org/wiki/Distribui%C3%A7%C3%A3o_de_Weibull).
+
+O valor esperado e a variância da distribuição Weibull são, respectivamente: 
+$${\displaystyle \mathrm {E} (X)=\lambda \Gamma \left(1+{\frac {1}{k}}\right)\,}$$
+
+$${\displaystyle {\textrm {var}}(X)=\lambda ^{2}\left[\Gamma \left(1+{\frac {2}{k}}\right)-\left(\Gamma \left(1+{\frac {1}{k}}\right)\right)^{2}\right]\,.} $$
+
+Para calcular a probabilidade de x ser igual a 1000 para uma distribuição com parâmetro de forma (shape) $k = 0.8$ e de escala (scale) $\lambda = 2000$, use o código abaixo:
+
+```{r}
+dweibull(1000, shape = 0.8,scale = 2000)
+```
+
+A função para computar a probabilidade acumulada por uma Weibull é `pweibull()`
+Sua vez: Seguindo a mesma lógica das distribuições anteriores, calcule a probabilidade, para a mesma distribuição weibull acima, de X ser menor do que 1000:
+
+```{r}
+
+```
+
+
+Sua vez: Calcule a probabilidade de X estar entre 1000 e 2000, a partir da mesma distribuição Weibull:
+
+```{r}
+
+```
+
+A função para calcular o quantil para uma distribuição Weibull é `qweibull()`
+Sua vez: Calcule o valor do sinistro quando a probabilidade é de 60%?
+
+```{r}
+
+```
+

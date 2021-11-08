@@ -1,0 +1,286 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("forecast")
+```
+
+
+```{r}
+require("forecast")
+```
+
+
+```{r}
+gold<-gold
+```
+
+
+```{r}
+summary(naive(gold,h=12))
+```
+
+```{r}
+plot(naive(gold,h=12),include=200)
+```
+
+
+```{r}
+wineind<-wineind
+```
+
+
+```{r}
+summary(naive(wineind,h=12))
+```
+
+```{r}
+summary(snaive(wineind,h=12))
+```
+
+```{r}
+plot(snaive(wineind))
+```
+
+
+```{r}
+mm_centrada_6 <- ma(wineind,order=6)
+mm_centrada_12 <- ma(wineind,order=12)
+summary(mm_centrada_6)
+```
+
+```{r}
+summary(mm_centrada_12)
+```
+
+```{r}
+plot(wineind)
+lines(mm_centrada_6,col="red",lty=5,lwd =2)
+lines(mm_centrada_12,col="blue",lty=1,lwd =3)
+legend('topleft', legend=c("wineind", "mm_centrada_6","mm_centrada_12"),
+  bty = "n",col=c("black","red", "blue"), lty=c(1,5,1), cex=0.8,
+  lwd =c(1,2,3))
+```
+
+```{r}
+plot(wineind)
+mm_centrada_12 <- ma(wineind,order=12)
+lines(mm_centrada_12,col="red")
+```
+
+```{r}
+install.packages("TTR")
+install.packages("forecast")
+install.packages("ggplot2")
+```
+
+```{r}
+require("TTR")
+require("ggplot")
+```
+
+```{r}
+z <- wineind
+l <- 12
+r <- 12
+```
+
+
+```{r}
+IC_MMS <- function(z,r,l){
+ smadf <- SMA(z,r)
+ IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+ IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+ Previsao <- rep(smadf[length(z)],l)
+ cbind(IC_I,Previsao,IC_S)
+ }
+```
+
+```{r}
+
+```
+
+```{r}
+ library(ggplot2)
+ a <- IC_MMS(z,r,l)
+ b <- c(z,a[,2])
+ smadf <- SMA(z,r)
+ grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+ geom_smooth(data=data.frame(a),
+ aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+ y = Previsao), stat="identity")+
+ geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+ geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+ geom_line(data = data.frame(smadf),aes(c(1:(length(b)-l)),smadf),
+ na.rm = T,col="red")+
+ labs(title =" Previs~ao", x = "Tempo", y = "Dados")
+
+ grafico
+```
+
+```{r}
+serie = ts(runif(100,10,15),start = c(1915,1),frequency = 1)
+```
+
+```{r}
+ajuste<-HoltWinters(serie, beta=FALSE, gamma=FALSE)
+ajuste
+plot(ajuste)
+```
+
+```{r}
+previsao<-forecast.HoltWinters(ajuste,h = 1)
+plot(previsao)
+```
+
+```{r}
+airmiles<-airmiles
+ajuste_com_tendencia<-HoltWinters(airmiles, gamma=FALSE)
+ajuste_com_tendencia
+```
+
+```{r}
+plot(airmiles)
+
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+
+legend('topleft', legend=c("airmiles", "ajuste_com_tendencia"),bty = "n",
+      col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+```{r}
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia)
+plot(previsao_com_tendencia)
+```
+
+```{r}
+AirPassengers<-AirPassengers
+
+ajuste_com_sazonalidade<-HoltWinters(AirPassengers)
+ajuste_com_sazonalidade
+```
+
+```{r}
+plot(AirPassengers)
+
+lines(fitted(ajuste_com_sazonalidade)[,1],col="red",lty=2,lwd =3)
+
+legend('topleft', legend=c("AirPassengers", "ajuste_com_sazonalidade"),
+    bty = "n",col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+```{r}
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade)
+plot(previsao_com_sazonalidade)
+```
+
+```{r}
+plot(naive(carga),include=200)
+```
+
+```{r}
+plot(snaive(carga,h=12),include=200)
+```
+
+```{r}
+accuracy(naive(carga,h=12))
+```
+
+```{r}
+accuracy(snaive(carga,h=12))
+```
+
+```{r}
+MAPE_MMS <- function(z,r){
+library(TTR)
+if(r==1){
+accuracy(naive(z))[5]
+}else{
+smadf <- NULL
+smadf1 <- 0
+smadf <- SMA(z,r) # lag is 4
+smadf <- c(NA,smadf[-length(z)])
+smadf1 <- ((sum(abs((z-(smadf))/z),na.rm = T))/(length(z)-r))*100
+smadf1
+}
+}
+```
+
+```{r}
+menor_MAPE_MMS <- function(z){
+a <- NULL
+for(i in 1:(length(z)-1)){
+a[i] <- MAPE_MMS(z,i)
+}
+paste0("r = ", which(a==min(a)) ,"; MAPE = ",min(a))
+}
+
+menor_MAPE_MMS(carga)
+```
+
+```{r}
+ajuste<-HoltWinters(carga, beta=FALSE, gamma=FALSE)
+ajuste
+```
+
+```{r}
+plot(carga)
+lines(fitted(ajuste)[,1],col="red",lty=2,lwd =3)
+
+legend('topleft', legend=c("carga", "ajuste"),bty = "n",
+  col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+```{r}
+previsao<-forecast.HoltWinters(ajuste,h = 12)
+plot(previsao)
+```
+
+```{r}
+accuracy(previsao)
+```
+
+```{r}
+ajuste_com_tendencia<-HoltWinters(carga, gamma=FALSE)
+ajuste_com_tendencia
+```
+
+```{r}
+plot(carga)
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("carga", "ajuste_com_tendencia"),bty = "n",
+col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+```{r}
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia)
+plot(previsao_com_tendencia)
+```
+
+```{r}
+accuracy(previsao_com_tendencia)
+```
+
+```{r}
+ajuste_com_sazonalidade<-HoltWinters(carga)
+ajuste_com_sazonalidade
+```
+
+```{r}
+plot(carga)
+lines(fitted(ajuste_com_sazonalidade)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("carga", "ajuste_com_sazonalidade"),bty = "n",
+col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+```{r}
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade)
+plot(previsao_com_sazonalidade)
+```
+
+```{r}
+accuracy(previsao_com_sazonalidade)
+```
+

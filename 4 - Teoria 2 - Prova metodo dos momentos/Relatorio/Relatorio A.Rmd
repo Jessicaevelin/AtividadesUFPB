@@ -1,0 +1,131 @@
+---
+title: "Letra A, OK"
+output:
+  html_document:
+    df_print: paged
+---
+
+Organizando o banco de dados
+ #falta corrigir o 2° banco de dados
+```{r}
+#transformando dados em uma lista de tamanho 12, onde onde lista está entre 1 e 12
+
+dados=list()
+length(dados)=12
+for(i in 1:12)
+  dados[[i]]=read.csv(paste("grupo4am",i,".csv",sep=""))
+```
+
+```{r include=FALSE}
+#visualizando as listas
+
+dados
+```
+
+```{r}
+#S é uma lista? com 12 informações
+
+S=c()
+N=c()
+N=numeric(i)
+S=numeric(i)
+```
+
+Severidade = x
+```{r}
+#Os valores separados de x na ordem do banco de dados
+
+x <-c((dados[[1]][,2]), (dados[[3]][,2]), (dados[[4]][,2]), (dados[[5]][,2]), (dados[[6]][,2]), (dados[[7]][,2]), (dados[[8]][,2]), (dados[[9]][,2]), (dados[[10]][,2]), (dados[[11]][,2]), (dados[[12]][,2]))
+```
+
+Frequencia = n
+```{r}
+#Os valores separados de n na ordem dos banco de dados
+
+n <-c((dados[[1]][,1]), (dados[[3]][,1]), (dados[[4]][,1]), (dados[[5]][,1]), (dados[[6]][,1]), (dados[[7]][,1]), (dados[[8]][,1]), (dados[[9]][,1]), (dados[[10]][,1]), (dados[[11]][,1]), (dados[[12]][,1]))
+```
+
+#--------------------------------------------------------------------------#
+
+Severidade da Carteira
+
+```{r}
+#Dados[[1]][,2] = Primeiro da lista, segunda coluna
+
+S=sum((dados[[1]][,2]), (dados[[3]][,2]), (dados[[4]][,2]), (dados[[5]][,2]), (dados[[6]][,2]), (dados[[7]][,2]), (dados[[8]][,2]), (dados[[9]][,2]), (dados[[10]][,2]), (dados[[11]][,2]), (dados[[12]][,2]))
+S
+```
+
+```{r}
+Ex <- mean(x)
+Vx <- var(x)
+Dpx <- sd(x)
+CVx <- Dpx / Ex
+```
+
+```{r}
+Ex   #Média dos valores de x
+Vx   #Variancia dos valores de x
+Dpx   #Desvio padrão dos valores de x
+CVx   #Coeficiente de variação de x
+```
+
+#--------------------------------------------------------------------------#
+
+Frequencia observada da carteira
+
+```{r}
+En <- mean(n)
+Vn <- var(n)
+Dpn <- sd(n)
+CVn <- Dpn / En
+```
+
+```{r}
+En   #Média dos valores de n
+Vn   #Variancia dos valores de n
+Dpn   #Desvio padrão dos valores de n
+CVn   #Coeficiente de variação de s
+```
+
+#--------------------------------------------------------------------------#
+
+Sinistro Agregado
+
+```{r}
+Es <- (En*Ex)
+Vs <- (En*Vx)+(Ex)^2*Vn
+Ds <- sqrt(Vs)
+CVs <- Ds/Es
+```
+
+```{r}
+Es   #Média dos valores de S
+Vs   #Variancia dos valores de S
+Ds   #Desvio padrão dos valores de S
+CVs   #Desvio padrão dos valores de S
+```
+
+#--------------------------------------------------------------------------#
+
+Premio Puro com 1% de nivel de significancia
+   #qnorm retorna o Z(1-a)
+```{r}
+PP1 = Es+qnorm(1-0.01)*Ds
+PP1
+```
+
+Premio Puro com 5% de nivel de significancia
+```{r}
+PP5 = Es+qnorm(1-0.05)*Ds
+PP5
+```
+
+Premio Puro com 10% de nivel de significancia
+```{r}
+PP10 = Es+qnorm(1-0.10)*Ds
+PP10
+```
+
+
+

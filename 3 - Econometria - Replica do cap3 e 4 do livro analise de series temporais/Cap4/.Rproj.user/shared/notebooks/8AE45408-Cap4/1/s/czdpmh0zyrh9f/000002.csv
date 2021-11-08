@@ -1,0 +1,5 @@
+"0","TT <- 200"
+"0",""
+"0","ar1 <- pacf(arima.sim(model=list(ar=0.9), n=TT),"
+"0","  ylab=expression(Y[t]),"
+"0","  main=expression(paste(""AR(1) com "", theta, ""=0.9"")))"

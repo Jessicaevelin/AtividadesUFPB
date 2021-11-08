@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583367947070.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2586466509",
+    "id" : "98260FA6",
+    "lastKnownWriteTime" : 1583459751,
+    "last_content_update" : 1583459751763,
+    "path" : "D:/Google Drive/6 - R/5- Estágio 2 - Prova da 3º Unidade/R/Script_3°Prova.Rmd",
+    "project_path" : "R/Script_3°Prova.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "97,27",
+        "scrollLine" : "84",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

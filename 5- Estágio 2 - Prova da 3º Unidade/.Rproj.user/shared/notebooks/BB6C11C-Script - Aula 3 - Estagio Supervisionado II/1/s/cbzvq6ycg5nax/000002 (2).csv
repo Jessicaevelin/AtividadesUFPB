@@ -1,0 +1,11 @@
+"0","library(actuar)"
+"2","package ‘actuar’ was built under R version 3.6.3"
+"2","
+Attaching package: ‘actuar’
+
+"
+"2","The following object is masked from ‘package:grDevices’:
+
+    cm
+
+"

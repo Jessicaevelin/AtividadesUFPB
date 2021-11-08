@@ -1,0 +1,1 @@
+"0","curve(dgamma(x, fit.gamma$estimate[1], fit.gamma$estimate[2]), add = TRUE, col = ""blue"")"

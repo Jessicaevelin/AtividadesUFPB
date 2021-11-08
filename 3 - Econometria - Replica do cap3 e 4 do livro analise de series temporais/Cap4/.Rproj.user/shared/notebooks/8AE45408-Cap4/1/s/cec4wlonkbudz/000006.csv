@@ -1,0 +1,4 @@
+"0","adf.y3 <- ur.df(y, type='trend', lags=3)"
+"0",""
+"0","acf(adf.y3@res, ci.type='ma', main='ACF Resíduos - ADF com 3 defasagens',"
+"0","  xlab='Defasagem')"

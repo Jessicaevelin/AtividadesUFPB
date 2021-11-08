@@ -1,0 +1,5 @@
+"0","fit_P  <- fitdist(sinistro, ""pareto"", start = list(shape = 1, scale = 500))
+"
+"2","Error in fitdist(sinistro, ""pareto"", start = list(shape = 1, scale = 500)) : 
+  The  dpareto  function must be defined
+"

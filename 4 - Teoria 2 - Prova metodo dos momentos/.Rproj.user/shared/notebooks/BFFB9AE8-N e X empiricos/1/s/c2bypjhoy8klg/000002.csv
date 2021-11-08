@@ -1,0 +1,4 @@
+"0","```r
+dados <- read.delim(\"D:/Google Drive/2 - Ufpb/P5/Teoria/Prova/dados.txt\")
+dados
+```"

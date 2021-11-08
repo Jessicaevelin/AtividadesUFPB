@@ -1,0 +1,435 @@
+---
+title: "Cap4 - Processos não estacionarios - Series Temporais"
+author: "Jessica"
+date: "11/09/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+yt <- pib
+```
+
+# 5 Função de autocorrelação - pág 38 #
+
+```{r}
+TT <- 200
+
+ar1 <- acf(arima.sim(model=list(ar=0.9), n=TT),
+  ylab=expression(Y[t]),
+  main=expression(paste("AR(1) com ", theta, "=0.9")))
+```
+
+# 6.  Função de autocorrelação parcial - pág 39 #
+
+```{r}
+TT <- 200
+
+ar1 <- pacf(arima.sim(model=list(ar=0.9), n=TT),
+  ylab=expression(Y[t]),
+  main=expression(paste("AR(1) com ", theta, "=0.9")))
+```
+
+
+#8. O teste de Dickey-Fuller #
+  
+```{r echo=FALSE}
+plot(yt,
+  ylab=expression(yt),
+  main='',
+  bty='l',
+col='blue')
+grid(col='darkgrey', lwd=2)
+```
+  
+```{r}
+summary(lm(diff(yt)~lag(yt,-1)[-length(yt)] - 1))
+```
+
+-----
+Intalando Pacotes necessarios para continuar os testes.
+
+```{r eval=FALSE, include=FALSE}
+install.packages("urca")
+```
+
+```{r include=FALSE}
+require(urca)
+```
+
+## 8.3 Teste Dickey-Fuller - Pág 48 até 51 ##
+
+```{r}
+summary(ur.df(yt, type='none', lags=0))
+```
+
+```{r}
+dyt <- diff(yt)
+summary(ur.df(dyt, type='none', lags=0))
+```
+
+```{r}
+plot(dyt,
+  ylab=expression(dyt),
+  main='',
+  bty='l',
+col='blue')
+grid(col='darkgrey', lwd=2)
+```
+
+```{r}
+ytanalise = ts(cumsum(rnorm(200)), end=c(2020,12), freq=12)
+plot(ytanalise)
+grid(col='darkgrey', lwd=2)
+
+```
+
+## 8.4 Teste Phillips-Perron - Pág 53 ##
+
+```{r}
+set.seed(12)
+t <- 200
+y1 <- ts(cumsum(rnorm(t)))
+y2 <- rnorm(t)
+```
+
+
+```{r}
+ts.plot(y1, y2,
+  ylab='', xlab='Tempo',
+  main='',
+  col=c('blue', 'red'),
+  lwd=2)
+grid(col='darkgrey', lwd=2)
+
+legend('bottom',c('Passeio aleatório','Ruído branco'),
+  lwd=2, col=c('blue','red'), bty='n')
+```
+
+```{r}
+PP.test(y1)
+```
+
+```{r}
+PP.test(y2)
+```
+
+## 8.5 O teste ADF sequencial - Pág 54 ##
+
+```{r eval=FALSE, include=FALSE}
+#Esse ambiente era o que estava no livro, criei ele novamente logo abaixo e colocando o banco de dados airpassengers
+y <- read.table('table17-2.txt', header=T)$PPDI
+y <- ts(y, start = 1970, freq=1)
+```
+
+```{r}
+y<- AirPassengers
+```
+
+```{r}
+plot(y, col='blue', main='Renda disponível',
+bty='l', xlab='Ano', ylab='$')
+```
+
+```{r}
+adf.y3 <- ur.df(y, type='trend', lags=3)
+
+acf(adf.y3@res, ci.type='ma', main='ACF Resíduos - ADF com 3 defasagens',
+  xlab='Defasagem')
+```
+
+```{r}
+adf.y2 <- ur.df(y, type='trend', lags=2)
+
+acf(adf.y2@res, ci.type='ma', main='ACF Resíduos - ADF com 2 defasagens',
+xlab='Defasagem')
+```
+
+```{r}
+adf.y0 <- ur.df(y, type='trend', lags=0)
+
+acf(adf.y0@res, ci.type='ma', main='ACF Resíduos - ADF sem defasagem',
+xlab='Defasagem')
+```
+
+
+```{r}
+summary(adf.y3)
+summary(adf.y2)
+summary(adf.y0)
+```
+
+
+```{r}
+adfd.y <- ur.df(y, type='drift', lags=0)
+
+summary(adfd.y)
+```
+
+## 9 Estimando modelos ARIMA - pág 64 ##
+
+```{r}
+adf6 <- ur.df(y, type='drift', lags=6)
+
+0acf(adf6@res, ci.type='ma',
+  main='Resíduos de teste ADF - 6 defasagens',
+  xlab='Defasagem')
+```
+
+```{r}
+summary(adf6)
+```
+
+```{r}
+par(mfrow=c(2,1))
+
+acf(y, ci.type='ma', main='IPCA (variação mensal)')
+  pacf(y, main='')
+```
+
+```{r eval=FALSE, include=FALSE}
+#Pacotes necessarios  para contiuar
+install.packages("lmtest")
+```
+```{r echo=FALSE}
+require("lmtest")
+```
+
+
+```{r}
+coeftest(arima(y, order=c(2,0,2)))
+```
+
+```{r}
+coeftest(arima(y, order=c(2,0,1)))
+```
+
+```{r}
+coeftest(arima(y, order=c(1,0,1)))
+```
+
+```{r}
+coeftest(arima(y, order=c(1,0,0)))
+```
+
+AIR =  278.464942 + 0.964632* Air-1 + u
+
+Página 189 - Capitulo 6 - Livro series temporais
+
+```{r}
+fit.air <- Arima(AirPassengers, order = c(0,1,1), seasonal = c(0,1,1),
+method = "ML", lambda = 0)
+
+summary(fit.air)
+```
+```{r}
+#se não funcionar, não causa muito problema
+t.test(fit.air)
+```
+
+
+```{r}
+diag <- tsdiag(fit.air, gof.lag = 20)
+```
+
+```{r}
+Box.test(x = fit.air$residuals, lag = 24,
+  type = "Ljung-Box", fitdf = 2)
+```
+```{r}
+#teste de heterocedasticidade
+require(FinTS)
+ArchTest(fit.air$residuals,lags = 12)
+```
+```{r}
+#teste de normalidade
+require(normtest)
+jb.norm.test(fit.air$residuals, nrepl=2000)
+```
+
+
+```{r}
+#previsão
+require(forecast)
+prev <- forecast(object = fit.air, h=12, level = 0.95)
+plot(prev)
+```
+```{r}
+accuracy(fit.air)
+```
+
+```{r}
+monthplot(y, col='darkblue', col.base='red',
+  main='IPCA por mês e IPCA médio por mês',
+  ylab='IPCA (%)', lty.base=2)
+
+legend('bottomleft', legend=c('IPCA', 'Média'), lty=c(1,2),
+  col=c('darkblue', 'red'), bty='n')
+```
+
+```{r}
+ljung.n <- function(prev, lag = 24,fitdf=2)
+pvalores <- matrix(NA, nrow=24, ncol=2)
+for (i in 1:100)
+pvalores <- Box.test(x = fit.air$residuals, lag = 24,
+  type = "Ljung-Box", fitdf = 2)$p.value
+
+pvalores
+```
+
+```{r}
+shapiro.test(resid(prev))
+```
+
+```{r}
+AIC(fit.air)
+AIC(update(fit.air, order=c(0,0,1)))
+AIC(update(fit.air, order=c(1,0,1)))
+AIC(update(fit.air, order=c(2,0,2)))
+```
+
+
+
+
+
+
+## 10 - Precisão com modelos ARIMA ##
+
+O nosso interesse dos modelos ARIMA é para saber o comportamento futuro do y.
+
+Para isso, iremos utilizar o modelo estimado anteriormente para o y. Utilizando a função predict vamos fazer uma previsão de 4 meses (futuros) para os dados.
+
+10.2 A função predict nos dá como resultado as estimativas e seus respectivos desvios-padrão. 
+
+```{r}
+prev <- predict(reg.ipca, n.ahead=4)
+```
+
+O gráficos mostraram o resultados das previsões feita pelo ARIMA.
+
+```{r}
+par(mfrow=c(1,2))
+ts.plot(window(ipca, start=2013),
+  prev$pred,
+  prev$pred+1.96*prev$se,
+  prev$pred-1.96*prev$se,
+  col=c(1,2,2,2), lty=c(1,1,2,2))
+
+plot(window(ipca, start=2013),
+  xlim=c(2013, 2015.2),
+  col='darkblue', lwd=2, bty='l', ylab='IPCA',
+  main='Previsão IPCA - Modelo AR(1)')
+
+lines(ts(c(ipca[length(ipca)],prev$pred), start=c(2014,10), freq=12),
+  col='red', lwd=2)
+
+lines(ts(c(ipca[length(ipca)],prev$pred+1.96*prev$se),
+  start=c(2014,10), freq=12),
+  col='darkred', lwd=2, lty=2)
+
+lines(ts(c(ipca[length(ipca)],prev$pred-1.96*prev$se),
+  start=c(2014,10), freq=12),
+  col='darkred', lwd=2, lty=2)
+```
+
+Agora faremos previsões de dentro da amostra, removeremos as 4 ultimas observações e re-estimaremos o modelo e podemos analisar se o modelo prever bem os dados.
+
+```{r}
+ipca.b <- window(ipca, end=c(2014, 06))
+
+reg.ipca.b <- arima(ipca.b, order=c(1,0,0))
+
+prev2 <- predict(reg.ipca.b, n.ahead=4)
+```
+
+O resultado graficamente:
+
+```{r}
+par(mfrow=c(1,2))
+
+ts.plot(window(ipca, start=2013),
+  prev2$pred,
+  prev2$pred+1.96*prev2$se,
+  prev2$pred-1.96*prev2$se,
+  col=c(1,2,2,2), lty=c(1,1,2,2))
+
+plot(window(ipca, start=2013),
+  col='darkblue', lwd=2, bty='l', ylab='IPCA',
+  main='Previsão IPCA - Modelo AR(1)')
+
+lines(ts(prev2$pred, start=c(2014,07), freq=12),
+  col='red', lwd=2)
+lines(ts(prev2$pred+1.96*prev2$se,
+  start=c(2014,07), freq=12),
+  col='darkred', lwd=2, lty=2)
+
+lines(ts(prev2$pred-1.96*prev2$se,
+start=c(2014,07), freq=12),
+col='darkred', lwd=2, lty=2)
+```
+
+##10.3 Avaliando previsões##
+
+Segundo o AIC os "dois melhores parametros e modelos para comportamento do y são os AR(1) e o ARMA(1,1).
+1. Estimar modelos utilizando dados
+2. Fazer previsão um passo à frente e salvar previsão;
+3. Calcular e salvar erro de previsão;
+4. Adicionar uma observação e reestimar modelos;
+5. Repetir passos 2-4 até chegar ao final da amostra.
+
+
+Contruindo a série de erros de previsão.
+
+```{r}
+erro1 <- matrix(NA, nrow=length(window(y, start=2013)), ncol=1)
+
+for (i in 1:length(erro1))
+  
+  erro1[i] <- y[(length(window(y, end=c(2012, 12)))+i)] -
+  
+  predict(
+  arima(y[1:(length(window(y, end=c(2012, 12)))+i-1)], order=c(1,0,0)),
+  n.ahead=1)$pred
+
+  erro1 <- ts(erro1, start=2013, freq=12)
+```
+
+```{r}
+erro2 <- matrix(NA, nrow=length(window(y, start=2013)), ncol=1)
+
+for (i in 1:length(erro1))
+
+  erro2[i] <- y[(length(window(y, end=c(2012, 12)))+i)] -
+  predict(arima(y[1:(length(window(y, end=c(2012, 12)))+i-1)], order=c(1,0,1)),
+  n.ahead=1)$pred
+
+erro2 <- ts(erro2, start=2013, freq=12)
+```
+
+Calculando as duas medidas:
+
+```{r}
+reqm1 <- sqrt(sum(erro1^2)/length(erro1))
+reqm2 <- sqrt(sum(erro2^2)/length(erro2))
+reqm1
+reqm2
+eam1 <- sum(abs(erro1))/length(erro1)
+eam2 <- sum(abs(erro2))/length(erro2)
+eam1
+eam2
+```
+
+```{r}
+reqm <- function(serie)
+reqm <- sqrt(sum(serie^2)/length(serie))
+print(reqm)
+```
+
+```{r}
+eam <- function(serie)
+eam <- sum(abs(serie))/length(serie)
+print(eam)
+```

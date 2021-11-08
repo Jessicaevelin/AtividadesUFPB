@@ -1,0 +1,1 @@
+"0","curve(dnorm(x, fit.normal$estimate[1], fit.normal$estimate[2]), add = TRUE, col = ""purple"")"

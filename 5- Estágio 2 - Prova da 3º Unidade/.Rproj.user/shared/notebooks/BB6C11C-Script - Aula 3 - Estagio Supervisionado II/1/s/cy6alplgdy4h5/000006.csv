@@ -1,0 +1,1 @@
+"0","curve(dweibull(x, fitw$estimate[1], fitw$estimate[2]), add = TRUE, col = ""red"")"

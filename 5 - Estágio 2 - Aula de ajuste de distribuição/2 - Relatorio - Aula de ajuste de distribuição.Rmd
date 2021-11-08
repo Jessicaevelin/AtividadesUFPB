@@ -1,0 +1,167 @@
+#### **Relatório - Aula de ajuste de distribuição** ####
+
+```{r}
+# Carregando os dados
+sinistro <- read.csv("sinistro_automoveis.csv", sep = ",")
+sinistro <- sinistro$x
+```
+
+#### **Estatística Descritiva** ####
+  
+**A função da estatística descritiva é descrever e resumir um conjunto de dados, com vários recursos como histograma, média, mediana, variância, valores máximos e mínimos e quartis.**
+
+
+```{r}
+# Histrograma
+hist(sinistro, main = "Histograma dos sinistro")
+```
+
+**O histograma mostra que a maioria dos dados, quase 75% estão concentrados entre 0 e 100 e os outros 25% estão entre 500 e 1000, ou seja os dados mostram ter uma características de distribuição de cauda pesada.**
+  
+  
+```{r}
+# Estatísticas Descritivas
+summary(sinistro)
+media <- mean(sinistro)
+desvio <- sd(sinistro)
+n <- length(sinistro)
+```
+
+**E o que foi dito visualizando o histograma pode ser percebido analisando o Summary dos dados. O terceiro quartil representa 75% dos dados ordenados e têm um valor de 11.059 muito abaixo da média 35.132 dos sinistros, então posso dizer que 75% dos sinistros estão abaixo da média. O valor mínimo é de 1 e o máximo é 999.**
+
+
+```{r}
+# Função para calcular diversas estatísticas
+estatisticas <- function(x){
+  x <- x[!is.na(x)] # isso serve para que ele omita as observações com NA
+  me <- mean(x)
+  med <- median(x)
+  n <- length(x)
+  s <- sd(x)
+  mi <- min(x)
+  ma <- max(x)
+  q25 <- quantile(x, probs = 0.25)
+  q75 <- quantile(x, probs = 0.75)
+  return(c(n = n, media = me, mediana = med, desvio = s, 
+           Q = q25, Q = q75, min = mi, max = ma))
+}
+```
+
+**Uma função que deixa automático um conjunto de comandos sobre estatística descritiva**
+
+
+```{r}
+# calculando as estatísticas descritivas
+estatisticas(sinistro)
+```
+
+**Encontrando as estatísticas descritivas por meio da função criada anteriormente**
+
+
+```{r include=FALSE}
+# Carregar pacote para realizar a estimação pela máxima-verossimilhança
+library(fitdistrplus)
+```
+
+#### **Gráfico de densidade e de distribuição acumulada** ####
+
+```{r}
+# Função do pacote que cria dois gráficos, o histograma e a acumulada
+plotdist(sinistro, histo=TRUE, demp = TRUE)
+```
+**Como temos disponível apenas uma amostra e não conhecemos a distribuição que gerou os dados, os gráficos tem a função deixar mais intuitivo a visualização da possível distribuição.**
+
+**Gráficos de densidade são utilizados para se conhecer a forma da distribuição dos dados e mostra a probabilidade de um intervalo do gráfico, nele é possível ver que os dados estão próximos de 0 e o outros de 500 até 999. **
+
+**O Gráfico de distribuição acumulada calcula a probabilidade acumulada(que é somada com a anterior) para um determinado valor de x, nesse gráfico os valores abaixo de 200 tem quase 100% de probabilidade de ocorrência e a uma quebra estrutural que entre 200 e 600 e então ele recomeça a partir dos 600 até o valor máximo.**
+
+
+#### **Gráfico de Cullen e Frey** ####
+
+```{r}
+# Função que demonstra o gráfico de Cullen e Frey cuja função é apresentar a proximidade da distribuição observada em relação às teóricas, tomando como base a curtose e assimetria
+descdist(sinistro)
+```
+
+**A partir do Gráfico de Cullen and Frey, é possível achar a distribuição que melhor explique os sinistros, Como o ponto de observação (azul) está dentro de beta, essa é a distribuição que provavelmente melhor explica os dados.**
+
+**Curtose é característica de forma um achatamento e skewness é a característica de assimetria**
+
+
+#### **Estimação de parâmetros por máxima-verossimilhança** ####
+
+**A função fitdist retorna os parâmetros das distribuições escolhidas**
+
+```{r}
+# Realizando as estimações
+fitg <- fitdist(sinistro, "gamma")
+fitg
+```
+
+**Para Gama o parâmetro de forma(shape) é 0.4361 com um grau de dispersão de 0.0079 um valor bem pequeno isso indica que o parâmetro está bem próximo do valor real, e o parâmetro de taxa(rate) é de 0.0124 com uma dispersão do valor real de  0.0003.**
+
+
+```{r eval=FALSE, include=FALSE}
+# Se a estimação não convergir conforme acima, utilize parâmetros iniciais de sugestão diferentes de 0:
+fitdist(sinistro, "gamma", start = list(shape = 0.06, rate = 0.001))
+
+```
+
+```{r}
+# Estimando os parâmetros para uma Weibull 
+fitw <- fitdist(sinistro, "weibull")
+fitw
+```
+**Para Weibull o parâmetro de forma(shape) é 0.5886 com um grau de dispersão de 0.0058 um valor bem pequeno isso indica que o parâmetro está bem próximo do valor real, e o parâmetro de escala(scale) é de 15.8894 com uma dispersão do valor real de  0.4546.**
+
+
+```{r}
+# Estimando os parâmetros para uma Lognormal
+fitln <- fitdist(sinistro, "lnorm")
+fitln
+```
+**Para Lognomal o parâmetro de log-média(meanlog) é 2.0708 com um grau de dispersão de 0.01934 um valor bem pequeno isso indica que o parâmetro está bem próximo do valor real, e o parâmetro log-desvio(sdlog) é de 1.2282 com uma dispersão do valor real de  0.0137**
+
+
+#### **Comparando graficamente as distribuições teóricas e estimadas** ####
+
+```{r}
+# Visualizando a distribuição empírica em relação às estimadas
+hist(sinistro, pch=20, breaks = 20, prob = TRUE, main = "")
+curve(dgamma(x, shape = fitg$estimate[1], rate = fitg$estimate[2]), add = TRUE, col = "blue")
+curve(dweibull(x, fitw$estimate[1], fitw$estimate[2]), add = TRUE, col = "green")
+curve(dlnorm(x, fitln$estimate[1], fitln$estimate[2]), add = TRUE, col = "red")
+```
+**Pelo gráfico de densidade a distribuição que melhor explica o histograma de sinistros é a Weibull, pois ela cai fortemente até o 200 e tem uma cauda pesada do que as outras distribuições nos valores mais altos, e essa é a principal característica dos dados de sinistros**
+
+
+```{r}
+# Criar quatro gráficos: Densidade, Acumulada, QQ-plot e PP-plot
+par(mfrow=c(2,2))
+plot.legend <- c("Gama","Weibull", "Lognormal")
+denscomp(list(fitg,fitw, fitln), legendtext = plot.legend)
+cdfcomp (list(fitg,fitw, fitln), legendtext = plot.legend)
+qqcomp  (list(fitg,fitw,fitln), legendtext = plot.legend)
+ppcomp  (list(fitg,fitw,fitln), legendtext = plot.legend)
+```
+**denscomp plota o histograma contra funções de densidade ajustada;**
+
+**cdfcomp é capaz de traçar ajustes de uma distribuição discreta;**
+
+**qqcomp plota quantis teóricos contra empíricos;**
+
+**ppcomp plota probabilidades teóricas contra empíricas.**
+
+**Pelo gráfico de densidade não é possível concluir, pois todos as distribuições estão muito próximos. Já os últimos 3 gráficos CDfs, QQplot, PPplot a distribuição que explica melhor os dados é a distribuição Gamma.**
+
+
+#### **Testes** ####
+
+```{r}
+# Para finalizar a análise, avaliaremos o Teste Kolmogorov-Sminorv e o critério informacional de Akaike com a função gofstat
+gofstat(list(fitg,fitw, fitln), fitnames = c("Gama","Weibull", "LogNormal"))
+```
+**O teste Kolmogorov-Sminorv observa a diferença absoluta entre a distribuição escolhida no caso Gama, Weibull e Lognormal e a função empírica que os dados seguem, compara-se esse valor com um p-valor, dado um nível de significância, Para dizer se a função é adequada ou não, é necessário fazer o teste de hipótese ks.test e descobrir o p-valor e chegar a conclusão se rejeita ou não a hipótese nula.**
+
+**A AIC Akaike estima a quantidade informações perdidas por um  modelo: quanto menos informações um modelo perde, maior a qualidade desse modelo.**
+

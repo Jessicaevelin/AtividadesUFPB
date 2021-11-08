@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583545845709.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "892635471",
+    "id" : "C987C601",
+    "lastKnownWriteTime" : 1583973415,
+    "last_content_update" : 1583973415,
+    "path" : "D:/Google Drive/6 - R/5 - Estágio 2 - Prova/Script/Script_Rascunho.R",
+    "project_path" : "Script/Script_Rascunho.R",
+    "properties" : {
+        "cursorPosition" : "108,0",
+        "scrollLine" : "96",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

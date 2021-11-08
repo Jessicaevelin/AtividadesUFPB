@@ -1,0 +1,3 @@
+"0",""
+"0","# dados estimados"
+"0","hist(sin, pch=20, breaks = 20, prob = TRUE, main = """")"

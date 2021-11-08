@@ -1,0 +1,257 @@
+---
+title: "Estágio II - Distribuição Agregada"
+author: "Filipe Coelho de Lima Duarte"
+output: 
+  html_document:
+    df_print: paged
+  pdf_document: 
+    df_print: kable
+    keep_tex: true
+---
+
+```{r echo = FALSE}
+knitr::opts_chunk$set(fig.width=10, fig.height=6) 
+```
+
+### Convolução para o Sinistro coletivo
+
+Vamos testar o pacote `actuar` a partir do exemplo 1 do cap. 6 do livro de Ferreira (2002). Inicialmente, carregaremos o pacote se ele já estiver sido instalado. Caso você não possua o pacote instalado, utilize o comando `install.packages("actuar")` no Console do Rstudio.
+
+```{r, warning=FALSE,message=FALSE}
+# carregar pacote
+library(actuar)
+# não usar notação científica
+# Evitar notação científica
+options(scipen=999)
+```
+
+### Exemplo 1
+Considere uma carteira de seguros com distribuição de Poisson composta com $\lambda = 2$ e distribuição de $X$ (tabela a seguir).
+
+Calcule:
+
+a. $f_{S^{col}}(x)$ para $x = 0,1,2,3,4,5,6$ e $F_{S^{col}}(6)$
+
+b. Coeficiente de variação de $S^{col}$
+
+```{r, results='asis'}
+lambda <- 2
+X <- data.frame(x = c(0,1,2,3), px = c(0, 0.6, 0.3, 0.1))
+n <- c(0, 1, 2, 3, 4, 5, 6)
+pn <- dpois(n, lambda = 2)
+N <- data.frame(n = n, pn = pn)
+X
+```
+
+#### Utilizando a Convolução
+```{r}
+# Usando a funcao aggregateDist
+# Criando FS pelo método da convolução
+FS <- aggregateDist(method = "convolution", model.freq = N$pn, model.sev = X$px, x.scale = 1)
+```
+
+Agora vamos visualizar a distribuição acumulada para $S^{col}$. Antes disso, vamos calcular a descritiva:
+
+```{r}
+FS(0:18)
+# descritiva
+summary(FS)
+# variância
+var(FS(0:18))
+# desvio-padrão
+sd(FS(0:18))
+```
+
+
+Podemos visualizar a distribuição acumulada a partir de um gráfico:
+
+```{r}
+# Gráfico
+plot(FS, main = "Distribuição do Sinistro agregado")
+```
+
+Se quisermos saber os valores das probabilidades acumuladas individualmente, precisamos utilizar a posição associada ao valor do sinistro que desejamos. 
+
+Como o R utiliza a contagem a partir no número '1', o sinistro acumulado de valor '0' estará na posição '1', o sinistro de valor '1', estará na posição '2', e assim sucessivamente. 
+
+Dessa forma, qual a probabilidade do sinistro assumir, no máximo, o valor  '0', isto é, qual é o valor de $P(S^{col} \le 0)$? 
+```{r} 
+#P(S<=0)
+FS(0)
+```
+
+Qual a probabilidade do sinistro agregado ser de, no máximo, '1'? ou seja, qual é $P(S^{col} \le 1)$? 
+
+```{r}
+# P(S <= 1)
+FS(1)
+```
+
+Se o interesse for na distribuição de densidade, como faremos? 
+
+Iremos calcular as diferenças entre os valores dos sinistros acumulados da posição 'i+1' e 'i'. O R possui uma função para essa tarefa, ela é a `diff()`. Abaixo, apresento várias maneiras de se obter a probabilidade do sinistro assumir apenas um valor. Por exemplo, quando se tem o interesse de calcular a probabilidade do sinistro assumir o valor '0', isto é, $P(S^{col} = 0)$. 
+
+```{r}
+# P(S = 0)
+FS(0) - FS(-1)
+diff(FS(-1:0))
+# como o sinistro de valor '0' é o primeiro, ele é o único que a probabilidade acumulada é igual a densidade.
+FS(0)
+```
+
+Visualizamos 2 formas distintas de se obter a probabilidade do sinistro assumir o valor '0'. Agora, qual seria a probabilidade do sinistro agregado assumir o valor '1'? $P(S^{col} = 1)$
+
+```{r}
+# P(S = 1)
+FS(1) - FS(0)
+diff(FS(0:1))
+```
+
+Certo que ficou entendida a forma de calcular a probabilidade do sinistro agregado assumir apenas um valor, vamos obter a distribuição de probabilidade (densidade) para o sinistro agregado utilizando a função `diff()`. 
+
+```{r}
+#Podemos calcular então a densidade usando a função diff
+diff(FS)
+# Precisamos salvar esse vetor em um objeto. Vamos chamá-lo de fS
+fS <- diff(FS)
+# Visualizando o objeto fS
+fS
+```
+
+Antes de responder o exemplo 1, vamos conferir se a função `diff()` gera o mesmo valor acumulado em relação a distribuição acumulada e, em seguida, criaremos um `data.frame`, que é uma tabela.
+
+```{r}
+# Confirmando se o método diff calcula a diferença 
+all(FS(0:18)==cumsum(diff(FS)))
+
+```
+
+```{r}
+# Criando um data frame com essas informações
+Scol <- data.frame(Sinistro = 0:(length(fS)-1), Probabilidade = fS, Acumulada = FS(0:18))
+Scol
+```
+
+Como determinamos toda a distribuição de densidade do sinistro agregado do o exemplo 1, isto é, já obtemos a resposta da letra a. No entanto, se quiseres apenas o que foi pedido, é simples, basta criar outra tabela a partir daquela criada acima. Para tanto, usaremos o conceito de indexação no R, e selecionaremos apenas as 7 primeiras linhas dessa tabela.
+
+```{r}
+fSa <- Scol[1:7,]
+fSa
+```
+
+Para responder a letra b (Coeficiente de Variação do Sinistro calculado na letra a.), precisamos calcular a esperança, o segundo momento e o desvio-padrão do Sinistro agregado. Faremos isso abaixo.
+
+```{r}
+# Esperança do Sinistro
+ES <- sum(fSa$Sinistro * fSa$Probabilidade)
+ES
+# Segundo Momento do Sinistro
+ES2 <- sum(fSa$Sinistro^2 * fSa$Probabilidade)
+ES2
+# Desvio-padrão do Sinistro
+DPS <- sqrt(ES2 - ES^2)
+DPS
+```
+
+Por fim, para calcular o coeficiente de variação, basta dividir o desvio-padrão pela esperança.
+
+```{r}
+# Coeficiente de Variação
+CV <- DPS/ES
+CV
+```
+
+#### Gráficos da distribuição do Sinistro agregado
+
+O R possui vários pacotes para se construir gráficos, contudo vamos utilizar apenas 2, o pacote `baseR` que é o que vem previamente  instalado e o `ggplot2`.
+
+Para o `baseR`, não há a necessidade de carregar nada. Apenas usar as suas funções. Para plotar um gráfico de densidade, usaremos a função `plot()` com o argumento `type = 'l'`.
+```{r g1}
+plot(x = Scol$Sinistro, y = Scol$Probabilidade, type = 'l')
+```
+
+No entanto, se desejares apenas os pontos, não será necessário utilizar o argumento `type = 'l'`.
+```{r g2}
+plot(x = Scol$Sinistro, y = Scol$Probabilidade)
+```
+
+Se quiseres que o gráfico possua os pontos e a curva, utilize o comando a seguir.
+
+```{r}
+plot(x = Scol$Sinistro, y = Scol$Probabilidade)
+lines(x = Scol$Sinistro, y = Scol$Probabilidade)
+```
+
+Esses gráficos não possuem tanta beleza estética. Para tal fim existe um pacote chamado `ggplot2`. Lembre-se de carregá-lo antes de chamar qualquer função.
+```{r}
+library(ggplot2)
+```
+
+Ele usa uma gramática simples e bem intuitiva. Abaixo, apresento a forma de elaborar um gráfico de pontos.
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point()
+```
+
+O argumento `aes()` significa **aesthetic**, que é a função de mapeamento estético. Ele vai pedir as informações da tabela que você colocou em `data`. 
+
+Portanto, se eu quiser agora apenas a curva da densidade, usarei a função `geom_line()`.
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_line()
+```
+
+E se o interesse for em combinar os pontos com a curva? Basta adicionar `geom_point()` e `geom_line()`.
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point() + 
+  geom_line()
+```
+
+Abaixo, apresento outras maneiras de melhorar a visualização desses gráficos, através da mudança das cores, da transparência e do tema do gráfico.
+
+#### Gráfico com a área colorida e um pouco de transparência (alpha)
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point() + 
+  geom_line() +
+  geom_area(fill = 'blue', alpha = 0.5)
+```  
+
+#### Agora com o tema minimalista
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point() + 
+  geom_line() +
+  geom_area(fill = 'blue', alpha = 0.5) +
+  theme_minimal()
+```
+
+#### Agora com o tema light
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point() + 
+  geom_line() +
+  geom_area(fill = 'blue', alpha = 0.5) +
+  theme_light()
+
+```
+
+##### Com o tema clássico
+
+```{r}
+ggplot(data = Scol, aes(x = Sinistro,y = Probabilidade)) +
+  geom_point() + 
+  geom_line() +
+  geom_area(fill = 'blue', alpha = 0.5) +
+  theme_classic()
+```
+
+Perceba a flexibilidade e facilidade na forma de criar gráficos com o ggplot2. Se desejar mais informação, existe um livro online gratuito
+[R for Data Science](https://r4ds.had.co.nz) do criador desse pacote. 

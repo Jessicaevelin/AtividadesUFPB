@@ -1,0 +1,97 @@
+
+...Continuando o script anterior
+
+#Metodo dos momentos#
+
+Extraindo a média (m1) e a variancia (m3) da severidade (X):
+```{r}
+Ex <- mean(x)
+Vx <- var(x)
+Ex
+Vx
+```
+
+```{r}
+#Criando os objetos m1, m2 e m3:
+   #Para evitar o erro de falta de objetos
+m1 = c()
+m2 = c()
+m3 = c()
+```
+
+**Ex = m1**
+
+**Ex^2 = m2**
+
+**Variancia = m3 = (m2-m1^2)**
+
+```{r}
+#Transformando a media observada em m1
+m1 <- Ex
+m1
+```
+
+```{r}
+#Transformando a variancia observada em m3
+m3 <- Vx
+m3
+```
+
+Parametros da distribuição pela formula dos momentos de gama
+$$
+\alpha=m_1^2/(m_2-m_1^2)
+$$
+
+$$
+\beta=m_1/(m_2-m_1^2)
+$$
+
+Alfa pelo metodo dos momentos (a)
+```{r}
+a = ((m1)^2)/m3
+a
+```
+
+Beta pelo metodo dos momentos (b)
+```{r}
+b = m1/m3
+b
+```
+
+```{r}
+#para gerar aleatoriamente
+help(rnbinom)
+#o n deve ser iguais
+rnbinom(100, parametros)
+rgamma(100, parametros)
+#refazer a letra A
+```
+
+
+```{r}
+#Teste de aderencia
+
+ks.test(n, "rnbinom", r, p )
+ks.test(x, "pgamma", a, b)
+```
+
+```{r}
+#normalidade
+shapiro.test(n)
+shapiro.test(x)
+```
+
+```{r}
+#parametro r, p da binomial
+
+p = En/Vn
+r = (En*p)/(1-p)
+p
+r
+```
+```{r}
+#para gerar N aleatoriamente
+rnbinom(100,r,p)
+rgamma(100,a,b)
+```
+

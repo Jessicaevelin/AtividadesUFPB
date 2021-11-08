@@ -1,0 +1,6 @@
+## Questão 1 ##
+#1ª. Determine o *coeficiente de ajustamento* para uma distribuição exponencial com parâmetro 0,08 e carregamento de segurança de 1,645. 
+alpha <- 0.08
+tetha <- 1.645
+
+r = (tetha)

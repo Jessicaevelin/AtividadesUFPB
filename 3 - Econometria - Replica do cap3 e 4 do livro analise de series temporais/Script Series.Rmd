@@ -1,0 +1,268 @@
+---
+title: "Econometria - Series Temporais"
+output:
+  html_document:
+    df_print: paged
+---
+
+Ativando os pacotes
+
+```{r include=FALSE}
+require(data.table)
+require(ggplot2)
+require(normtest)
+require(tseries)
+require(vars)
+require(fBasics)
+require(het.test)
+```
+
+Importando o banco de dados #exemplo bd, criado de forma aleatoria
+
+```{r include=FALSE}
+dados<- read.delim("D:/Google Drive/2 - Ufpb/P5/Econometria/Series/Dados/bd.txt", row.names=1)
+class(dados)
+
+```
+
+```{r}
+dados
+```
+
+Separando as Variaveis da tabela
+   Uma forma de analisar variaveis do banco de formas separadas
+   Para simplificar, serão analisados apenas a (coluna2 até a coluna6) incluindo o ano(coluna2).
+
+```{r}
+Ano<-dados[,1]
+A<-dados[,2]
+B<-dados[,3]    
+C<-dados[,4]    
+D<-dados[,5]
+F<-dados[,6]
+```
+
+```{r include=FALSE}
+Ano<-ts(Ano, frequency=1, start=c(1990,1))
+Ano
+```
+
+
+---
+Estatistica Descritiva
+---
+
+
+```{r}
+summary(dados)
+```
+
+Medidas de Disperção
+
+Variância
+
+```{r}
+var(A)
+var(B)
+var(C)
+var(D)
+var(F)
+```
+
+Desvio Padrão
+
+```{r}
+sd(A)
+sd(B)
+sd(C)
+sd(D)
+sd(F)
+```
+
+Amplitude Total
+
+```{r}
+ampt_A <- max(A)-min(A)
+ampt_B <- max(B)-min(B)
+ampt_C <- max(C)-min(C)
+ampt_D <- max(D)-min(D)
+ampt_F <- max(F)-min(F)
+ampt_A
+ampt_B
+ampt_C
+ampt_D
+ampt_F
+```
+
+Amplitude Interquartil
+
+```{r}
+IQR(A)
+IQR(B)
+IQR(C)
+IQR(D)
+IQR(F)
+```
+
+Coeficiente de variação
+
+```{r}
+sd(A)/mean(A)*100
+sd(B)/mean(B)*100
+sd(C)/mean(C)*100
+sd(D)/mean(D)*100
+sd(F)/mean(F)*100
+
+```
+
+Covariancia
+
+```{r}
+cov(dados)
+```
+
+
+---
+Gráficos
+---
+
+
+Histograma
+
+ #criando o gráfico
+ 
+```{r}
+hist(A, main = "Distribuição da frequencia A", 
+     xlab = "A",las=1 , col = "lightskyblue")
+hist(B, main = "Distribuição da frequencia B", 
+     xlab = "B",las=1 , col = "lightskyblue")
+hist(C, main = "Distribuição da frequencia C",
+     xlab = "C",las=1 , col = "lightskyblue")
+hist(D, main = "Distribuição da frequencia D", 
+     xlab = "D",las=1 , col = "lightskyblue")
+hist(F, main = "Distribuição da frequencia F", 
+     xlab = "F",las=1 , col = "lightskyblue")
+
+```
+
+Boxplot
+
+ #criando o gráfico
+
+```{r}
+boxplot(A,
+         xlab = "A",las=1 , col = "green")
+boxplot(B,
+         xlab = "B",las=1 , col = "green")
+boxplot(C,
+         xlab = "C",las=1 , col = "green")
+boxplot(D,
+         xlab = "D",las=1 , col = "green")
+boxplot(F,
+         xlab = "F",las=1 , col = "green")
+
+```
+
+Dispersão
+
+ #criando o gráfico
+ 
+```{r}
+plot(A, Ano,
+         xlab = "A", las=1, pch=19, col = "black")
+plot(B, Ano,
+         xlab = "B", las=1, pch=19, col = "black")
+plot(C, Ano,
+         xlab = "C", las=1, pch=19, col = "black")
+plot(D, Ano,
+         xlab = "D", las=1, pch=19, col = "black")
+plot(F, Ano,
+         xlab = "F", las=1, pch=19, col = "black")
+```
+
+Gráfico de Barras
+
+   #criando o gráfico
+   
+```{r}
+barplot(A, col = gray.colors(29))
+barplot(B, col = gray.colors(29))
+barplot(C, col = gray.colors(29))
+barplot(D, col = gray.colors(29))
+barplot(F, col = gray.colors(29))
+```
+
+Ramos e Folhas
+   
+   #criando o gráfico
+```{r}
+stem(A)
+stem(B)
+stem(C)
+stem(D)
+stem(F)
+```
+
+Distribuição Empirica
+
+   #criando o gráfico
+```{r}
+nA <- length(A)
+yA <- (1:nA)/nA
+deA <- sort(A)
+plot(A, yA, type ="S", xlab ="A", ylab ="Probabilidade", main ="Distribuição Empirica de A")
+
+nB <- length(B)
+yB <- (1:nB)/nB
+deB <- sort(B)
+plot(B, yB, type ="S", xlab ="B", ylab ="Probabilidade", main ="Distribuição Empirica de B")
+
+nC <- length(C)
+yC <- (1:nC)/nC
+deC <- sort(C)
+plot(C, yC, type ="S", xlab ="C", ylab ="Probabilidade", main ="Distribuição Empirica de C")
+
+nD <- length(D)
+yD <- (1:nD)/nD
+deD <- sort(D)
+plot(D, yD, type ="S", xlab ="D", ylab ="Probabilidade", main ="Distribuição Empirica de D")
+
+nF <- length(F)
+yF <- (1:nD)/nD
+deF <- sort(F)
+plot(F, yF, type ="S", xlab ="F", ylab ="Probabilidade", main ="Distribuição Empirica de F")
+```
+
+
+Adicionando elementos ao gráfico - Pág 83  a 94
+   ##Depende do banco de dados e das informações.
+   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

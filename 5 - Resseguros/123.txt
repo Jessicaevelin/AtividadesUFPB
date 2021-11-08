@@ -1,0 +1,5 @@
+x <- 1:10 
+ifelse(x<5 | x>8, x, 0)
+
+y <- Z$pz ; y
+ifelse(y>,y,0)

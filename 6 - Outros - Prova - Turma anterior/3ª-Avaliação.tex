@@ -1,0 +1,220 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Trabalho - 3ª Avaliação},
+            pdfauthor={Filipe Coelho de Lima Duarte},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Trabalho - 3ª Avaliação}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Filipe Coelho de Lima Duarte}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+\hypertarget{projeto-da-disciplina-estagio-supervisionado-ii-do-semestre-2019.1}{%
+\subsection{Projeto da disciplina Estágio Supervisionado II do semestre
+2019.1}\label{projeto-da-disciplina-estagio-supervisionado-ii-do-semestre-2019.1}}
+
+O trabalho consistirá em um projeto em que cada aluno possuirá uma base
+de dados diferente.
+
+O projeto é dividido em duas etapas:
+
+\hypertarget{considere-os-dados-referente-ao-seu-nome-contidos-na-pasta.-por-exemplo-antonio-roberto-utilizara-o-arquivo-denominado-base_antonio.csv.}{%
+\subsubsection{1. Considere os dados referente ao seu nome contidos na
+pasta. Por exemplo, Antonio Roberto utilizará o arquivo denominado
+``base\_antonio.csv''.}\label{considere-os-dados-referente-ao-seu-nome-contidos-na-pasta.-por-exemplo-antonio-roberto-utilizara-o-arquivo-denominado-base_antonio.csv.}}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\item
+  Faça as estatísticas descritivas da variável ``valor'' que se refere
+  aos sinistros.
+\item
+  Plote um histograma para a variável ``valor''.
+\item
+  Estime os parâmetros pelo método da máxima verossimilhança para as
+  distribuições: ``normal'', ``gamma'', ``lognormal'', ``weibull'',
+  ``pareto''.
+\item
+  Apresente os gráficos dos modelos probabilísticos estimados em relação
+  à distribuição empírica.
+\item
+  Indique qual o modelo que melhor se ajusta aos dados dos sinistros e
+  explique o porquê.
+\end{enumerate}
+
+\hypertarget{calcule-o-premio-puro-pelo-principio-do-valor-esperado-para-a-carteira-pelo-modelo-de-risco-coletivo.-utilize-o-carregamento-de-seguranca-theta-10.}{%
+\subsubsection{\texorpdfstring{2. Calcule o Prêmio Puro pelo Princípio
+do Valor Esperado para a Carteira pelo Modelo de Risco Coletivo. Utilize
+o carregamento de segurança
+\(\theta = 10\)\%.}{2. Calcule o Prêmio Puro pelo Princípio do Valor Esperado para a Carteira pelo Modelo de Risco Coletivo. Utilize o carregamento de segurança \textbackslash{}theta = 10\%.}}\label{calcule-o-premio-puro-pelo-principio-do-valor-esperado-para-a-carteira-pelo-modelo-de-risco-coletivo.-utilize-o-carregamento-de-seguranca-theta-10.}}
+
+\begin{itemize}
+\tightlist
+\item
+  Adrilayne
+\end{itemize}
+
+Uitilzará uma base de dados que corresponde aos sinistros de uma
+carteira de seguro saúde. A distribuição referente à frequência de
+sinistros \(N\) será a Binomial Negativa com parâmetros \(r=3\) e
+\(p=0.9\) A quantidade de segurados na carteira é 10000.
+
+\begin{itemize}
+\tightlist
+\item
+  Antonio Roberto
+\end{itemize}
+
+Utilizará uma base de dados que corresponde aos sinistros de uma
+carteira de automóvel. A distribuição referente à frequência de
+sinistros por apólice será uma Binomial Negativa com parâmetros \(r=2\)
+e \(p=0.85\). A quantidade de segurados na carteira é 5000.
+
+\begin{itemize}
+\tightlist
+\item
+  José de Matos
+\end{itemize}
+
+Utilizará uma base de dados que corresponde aos sinistros de uma
+carteira de seguro de incêndio. A distribuição referente à frequência de
+sinistros por apólice será uma Binomial Negativa com parâmetros \(r=2\)
+e \(p=0.98\). A quantidade de segurados na carteira é 1000.
+
+\begin{itemize}
+\tightlist
+\item
+  Lucas
+\end{itemize}
+
+Utilizará uma base de dados que corresponde aos sinistros de uma
+carteira de seguro de responsabilidade civil. A distribuição referente à
+frequência de sinistros por apólice é uma Poisson com parâmetro
+\(\lambda = 1\). A quantidade de segurados na carteira é 600.
+
+\begin{itemize}
+\tightlist
+\item
+  Ludmila
+\end{itemize}
+
+Utilizará uma base de dados que corresponde aos sinistros de uma
+carteira de seguro viagem. A distribuição referente à frequêcia de
+sinistros por apólice será uma Poisson com parâmetro \(\lambda = 2\). A
+quantidade de segurados na carteira é 5000.
+
+\hypertarget{calcule-o-premio-comercial-com-carregamento-para-despesas-alpha-18.}{%
+\subsubsection{\texorpdfstring{3. Calcule o Prêmio Comercial com
+carregamento para despesas
+\(\alpha = 18\)\%.}{3. Calcule o Prêmio Comercial com carregamento para despesas \textbackslash{}alpha = 18\%.}}\label{calcule-o-premio-comercial-com-carregamento-para-despesas-alpha-18.}}
+
+\hypertarget{elabore-2-contratos-de-resseguro-para-mitigar-os-riscos-da-carteira-de-sua-seguradora.}{%
+\subsubsection{4. Elabore 2 contratos de Resseguro para mitigar os
+riscos da carteira de sua
+seguradora.}\label{elabore-2-contratos-de-resseguro-para-mitigar-os-riscos-da-carteira-de-sua-seguradora.}}
+
+O primeiro contrato será proporcional e o segundo não proporcional. Além
+disso, para cada tipo de contrato, você terá que elaborar 3 cenários
+para cada contrato de Resseguro e apresentar:
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\item
+  Prêmio Puro e Comercial Retido
+\item
+  Prêmio Puro e Comercial da Resseguradora considerando o carregamento
+  para despesas da resseguradora de 20\%.
+\item
+  Sinistro Retido
+\item
+  Sinistro de responsabilidade da Resseguradora
+\item
+  Probabilidade dos Sinistros Retidos Superarem o Prêmio Puro Retido.
+\end{enumerate}
+
+\hypertarget{calcular-a-partir-do-quesito-anterior---contrato-de-resseguro-a-reserva-de-risco-mu-que-garanta-a-solvencia-da-seguradora-em-95-ao-longo-de-1-ano.}{%
+\subsubsection{\texorpdfstring{5. Calcular, a partir do quesito anterior
+- Contrato de Resseguro, a Reserva de Risco (\(\mu\)) que garanta a
+Solvência da Seguradora em 95\% ao longo de 1
+ano.}{5. Calcular, a partir do quesito anterior - Contrato de Resseguro, a Reserva de Risco (\textbackslash{}mu) que garanta a Solvência da Seguradora em 95\% ao longo de 1 ano.}}\label{calcular-a-partir-do-quesito-anterior---contrato-de-resseguro-a-reserva-de-risco-mu-que-garanta-a-solvencia-da-seguradora-em-95-ao-longo-de-1-ano.}}
+
+
+\end{document}

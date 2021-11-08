@@ -1,0 +1,1 @@
+"0","curve(dlnorm(x, fit.lognormal$estimate[1], fit.lognormal$estimate[2]), add = TRUE, col = ""red"")"

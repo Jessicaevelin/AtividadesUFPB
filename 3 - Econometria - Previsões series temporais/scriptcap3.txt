@@ -1,0 +1,552 @@
+#Modelo NAIVE
+summary(naive(dados[,1],h=27))
+summary(naive(dados[,2],h=27))
+summary(naive(dados[,3],h=27))
+summary(naive(dados[,4],h=27))
+summary(naive(dados[,5],h=27))
+summary(naive(dados[,6],h=27))
+summary(naive(dados[,7],h=27))
+summary(naive(dados[,8],h=27))
+
+plot(naive(dados[,1],h=20),include=7)
+plot(naive(dados[,2],h=20),include=7)
+plot(naive(dados[,3],h=20),include=7)
+plot(naive(dados[,4],h=20),include=7)
+plot(naive(dados[,5],h=20),include=7)
+plot(naive(dados[,6],h=20),include=7)
+plot(naive(dados[,7],h=20),include=7)
+plot(naive(dados[,8],h=20),include=7)
+
+summary(snaive(dados[,1],h=27))
+summary(snaive(dados[,2],h=27))
+summary(snaive(dados[,3],h=27))
+summary(snaive(dados[,4],h=27))
+summary(snaive(dados[,5],h=27))
+summary(snaive(dados[,6],h=27))
+summary(snaive(dados[,7],h=27))
+summary(snaive(dados[,8],h=27))
+
+plot(snaive(dados[,1],h=27))
+plot(snaive(dados[,2],h=27))
+plot(snaive(dados[,3],h=27))
+plot(snaive(dados[,4],h=27))
+plot(snaive(dados[,5],h=27))
+plot(snaive(dados[,6],h=27))
+plot(snaive(dados[,7],h=27))
+plot(snaive(dados[,8],h=27))
+
+#Média móvel
+#Centrada
+mm_centrada_27 <- ma(dados[,1],order=27)
+mm_centrada_27 <- ma(dados[,2],order=27)
+mm_centrada_27 <- ma(dados[,3],order=27)
+mm_centrada_27 <- ma(dados[,4],order=27)
+mm_centrada_27 <- ma(dados[,5],order=27)
+mm_centrada_27 <- ma(dados[,6],order=27)
+mm_centrada_27 <- ma(dados[,7],order=27)
+mm_centrada_27 <- ma(dados[,8],order=27)
+
+mm_centrada_15 <- ma(dados[,1],order=15)
+mm_centrada_15 <- ma(dados[,2],order=15)
+mm_centrada_15 <- ma(dados[,3],order=15)
+mm_centrada_15 <- ma(dados[,4],order=15)
+mm_centrada_15 <- ma(dados[,5],order=15)
+mm_centrada_15 <- ma(dados[,6],order=15)
+mm_centrada_15 <- ma(dados[,7],order=15)
+mm_centrada_15 <- ma(dados[,8],order=15)
+
+summary(mm_centrada_27(dados[,1]))
+summary(mm_centrada_27(dados[,2]))
+summary(mm_centrada_27(dados[,3]))
+summary(mm_centrada_27(dados[,4]))
+summary(mm_centrada_27(dados[,5]))
+summary(mm_centrada_27(dados[,6]))
+summary(mm_centrada_27(dados[,7]))
+summary(mm_centrada_27(dados[,8]))
+
+summary(mm_centrada_15(dados[,1]))
+summary(mm_centrada_15(dados[,2]))
+summary(mm_centrada_15(dados[,3]))
+summary(mm_centrada_15(dados[,4]))
+summary(mm_centrada_15(dados[,5]))
+summary(mm_centrada_15(dados[,6]))
+summary(mm_centrada_15(dados[,7]))
+summary(mm_centrada_15(dados[,8]))
+
+plot(dados[,1])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,2])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,3])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,4])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,5])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,6])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,7])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+plot(dados[,8])
+lines(mm_centrada_27,col="red",lty=5,lwd =2)
+lines(mm_centrada_15,col="blue",lty=1 , lwd =3)
+
+plot(dados[,1])
+mm_centrada_15 <- ma(dados[,1],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,2])
+mm_centrada_15 <- ma(dados[,2],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,3])
+mm_centrada_15 <- ma(dados[,3],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,4])
+mm_centrada_15 <- ma(dados[,4],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,5])
+mm_centrada_15 <- ma(dados[,5],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,6])
+mm_centrada_15 <- ma(dados[,6],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,7])
+mm_centrada_15 <- ma(dados[,7],order=15)
+lines(mm_centrada_15,col="red")
+plot(dados[,8])
+mm_centrada_15 <- ma(dados[,8],order=15)
+lines(mm_centrada_15,col="red")
+
+#Simples
+# z = Série temporal
+# r = Tamanho
+# l = Número
+
+z <- dados[,1]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,2]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,3]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,4]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,5]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,6]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,7]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+z <- dados[,8]
+l <- 15
+r <- 15
+IC_MMS <- function(z,r,l){
+smadf <- SMA(z,r)
+IC_I <- rep(smadf[length(z)],l) - 1.96*sd(z)/sqrt(r)
+IC_S <- rep(smadf[length(z)],l) + 1.96*sd(z)/sqrt(r)
+previsao <- rep(smadf[length(z)],l)
+cbind(IC_I,previsao,IC_S)
+}
+IC_MMS(z,r,l)
+
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,1])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "IDH 1991", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,2])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "IDH 2000", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,3])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "longevidade 1991", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,4])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "longevidade 2000", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,5])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "educação 1991", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,6])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "educação 2000", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,7])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "renda 1991", y = "Estado")
+grafico
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,8])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+  geom_smooth(data=data.frame(a),
+              aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+              y = previsao), stat="identity")+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+  geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+  geom_line(data = data.frame(smadf),aes(c(1:length(b)-l)),smadf),
+            na.rm = T,col="red")
+  labs(title =" Previsão", x = "renda 2000", y = "Estado")
+grafico
+
+#Modelos de suavização exponencial
+#Modelos para séries localmente constantes
+#Suavização exponencial simples(SES)
+serie = ts(dados[,1],start = c(1991,1),frequency = 1)
+serie = ts(dados[,2],start = c(2000,1),frequency = 1)
+serie = ts(dados[,3],start = c(1991,1),frequency = 1)
+serie = ts(dados[,4],start = c(2000,1),frequency = 1)
+serie = ts(dados[,5],start = c(1991,1),frequency = 1)
+serie = ts(dados[,6],start = c(2000,1),frequency = 1)
+serie = ts(dados[,7],start = c(1991,1),frequency = 1)
+serie = ts(dados[,8],start = c(2000,1),frequency = 1)
+
+ajuste<-HoltWinters(serie(dados[,1]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,2]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,3]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,4]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,5]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,6]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,7]), beta=FALSE, gamma=FALSE)
+ajuste
+ajuste<-HoltWinters(serie(dados[,8]), beta=FALSE, gamma=FALSE)
+ajuste
+
+plot(ajuste(dados[,1])
+plot(ajuste(dados[,2])
+plot(ajuste(dados[,3])
+plot(ajuste(dados[,4])
+plot(ajuste(dados[,5])
+plot(ajuste(dados[,6])
+plot(ajuste(dados[,7])
+plot(ajuste(dados[,8])
+
+previsao<-forecast.HoltWinter(ajuste(dados[,1]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,2]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,3]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,4]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,5]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,6]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,7]),h = 1)
+plot(previsao)
+previsao<-forecast.HoltWinter(ajuste(dados[,8]),h = 1)
+plot(previsao)
+
+#Modelo para séries com tendência
+#Suavização exponencial de Holt (SEH)
+dados[,1]
+dados[,2]
+dados[,3]
+dados[,4]
+dados[,5]
+dados[,6]
+dados[,7]
+dados[,8]
+
+ajuste_com_tendencia<-HoltWinters(dados[,1], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,2], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,3], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,4], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,5], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,6], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,7], gamma=FLASE)
+ajuste_com_tendencia
+ajuste_com_tendencia<-HoltWinters(dados[,8], gamma=FLASE)
+ajuste_com_tendencia
+
+plot(dados[,1])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,2])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,3])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,4])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,5])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,6])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,7])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,8])
+lines(fitted(ajuste_com_tendencia)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("IDH 1991", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,1]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,2]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,3]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,4]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,5]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,6]))
+plot(previsao_com_tendencia)
+previsao_com_tendencia<-forecast.HoltWinters(ajuste_com_tendencia(dados[,7]))
+plot(previsao_com_tendencia)
+
+#Modelo para séries sazonais
+#Suavização exponencial de Holt-Winters (HW)
+#Modelo Aditivo
+#Modelo Multiplicativo
+
+dados[,1]
+dados[,2]
+dados[,3]
+dados[,4]
+dados[,5]
+dados[,6]
+dados[,7]
+dados[,8]
+
+ajuste_com_sazonalidade<-HoltWinters(dados[,1])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,2])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,3])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,4])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,5])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,6])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,7])
+ajuste_com_sazonalidade
+ajuste_com_sazonalidade<-HoltWinters(dados[,8])
+ajuste_com_sazonalidade
+
+plot(dados[,1])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("IDH 1991", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,2])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("IDH 2000", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,3])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("longevidade 1991", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,4])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("longevidade 2000", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,5])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("educação 1991", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,6])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("educação 2000", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,7])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("renda 1991", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,8])
+lines(fitted(ajuste_com_sazonalidade)[,1]),col="red",lty=2,lwd =3),
+legend('topleft', legend=c("renda 2000", "ajuste_com_sazonalidade"),
+       bty = "n',col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,1]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,2]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,3]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,4]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,5]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,6]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,7]))
+plot(previsao_com_sazonalidade)
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade(dados[,8]))
+plot(previsao_com_sazonalidade)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

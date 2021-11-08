@@ -1,0 +1,5 @@
+"0","ts.plot(y1, y2,"
+"0","  ylab='', xlab='Tempo',"
+"0","  main='',"
+"0","  col=c('blue', 'red'),"
+"0","  lwd=2)"

@@ -1,0 +1,14 @@
+"0","install.packages(""FinTS"")
+"
+"2","WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+"
+"2","Installing package into ‘C:/Users/Jessica/OneDrive/Documentos/R/win-library/3.6’
+(as ‘lib’ is unspecified)
+"
+"2","trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.6/FinTS_0.4-6.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 3720330 bytes (3.5 MB)
+"

@@ -1,0 +1,5 @@
+"0","# Importação dos dados:"
+"0","grupo4 <- read_csv(""D:/Google Drive/6 - R/5 - Estágio 2 - Prova/Dados/grupo4.csv"",col_types = cols(n = col_number(), x = col_number()))"
+"0",""
+"0","# separando apenas o x do data frame"
+"0","sin <- grupo4$x #sin = sinistros(x)"

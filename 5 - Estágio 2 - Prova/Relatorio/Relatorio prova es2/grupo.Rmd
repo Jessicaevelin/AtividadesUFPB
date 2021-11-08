@@ -1,0 +1,152 @@
+---
+title: Lista 3° Unidade
+author: GEISIANNY KELLY, JESSICA EVELIN, LUCAS ALLAN, MICAELA CARNEIRO 
+date: Março de 2020
+---
+#### **Base**
+
+###### **Pacotes:**
+```{r message=FALSE, warning=FALSE}
+#Pacotes necessários
+library(readr)
+library(fitdistrplus)
+library(MASS)
+library(actuar)
+```
+
+###### **Dados:**
+```{r message=FALSE, warning=FALSE}
+# Importação dos dados:
+grupo4 <- read_csv("D:/Google Drive/6 - R/5 - Estágio 2 - Prova/Dados/grupo4.csv",col_types = cols(n = col_number(), x = col_number()))
+
+# separando apenas o x do data frame
+sin <- grupo4$x #sin = sinistros(x)
+```
+.
+
+#### **Respostas - Questão 1**
+
+
+###### **1. Considere os dados referente ao seu nome contidos na pasta. Por exemplo, Grupo 1 utilizará o arquivo denominado “grupo1.csv”.**
+
+###### **a) Elabora uma tabela com as estatísticas descritivas da variável “x” que se refere aos valores dos sinistros.**
+```{r}
+# estatísticas descritivas
+summary(sin)
+```
+
+###### **Comentários - 1.a):**
+.
+
+###### **b) Plote um histograma para a variável valor de 1 sinistro (‘x’).**
+```{r}
+#histograma
+hist(sin, main = "Histograma dos sinistros", xlab = "Valores dos sinistros", ylab = "Frequência", breaks = 90)
+```
+
+###### **Comentários - 1.b):**
+.
+
+###### **c) Estime os parâmetros pelo método da máxima verossimilhança para as distribuições: “normal”,“gamma”, “lognormal”, “weibull”, “pareto”.**
+```{r}
+# ajustes da distribuição:
+descdist(sin) 
+
+# Estimando os parâmetros para normal,gamma,lognormal,weibull e pareto:
+# Gamma e Pareto precisam do pacote actuar
+fit.normal <- fitdist(sin, "norm")
+fit.gamma <- fitdist(sin, distr = "gamma", method = "mle", lower = c(0, 0), start = list(scale = 1, shape = 500)) 
+fit.lognormal <- fitdist(sin, "lnorm")
+fit.weibull <- fitdist(sin, "weibull")
+fit.pareto  <- fitdist(sin, "pareto", start = list(shape = 1, scale = 500)) 
+
+# Parâmetros de cada distribuição:
+summary(fit.normal)
+summary(fit.gamma)
+summary(fit.lognormal)
+summary(fit.weibull)
+summary(fit.pareto)
+```
+
+###### **Comentários - 1.c):**
+.
+
+###### **d) Apresente os gráficos dos modelos probabilísticos estimados em relação à distribuição empírica.**
+```{r}
+# dados empiricos
+plotdist(sin, histo = TRUE, demp = TRUE) 
+
+# dados estimados
+hist(sin, pch=20, breaks = 20, prob = TRUE, main = "")
+curve(dnorm(x, fit.normal$estimate[1], fit.normal$estimate[2]), add = TRUE, col = "purple")
+curve(dgamma(x, fit.gamma$estimate[1], fit.gamma$estimate[2]), add = TRUE, col = "blue")
+curve(dlnorm(x, fit.lognormal$estimate[1], fit.lognormal$estimate[2]), add = TRUE, col = "red")
+curve(dweibull(x, fit.weibull$estimate[1], fit.weibull$estimate[2]), add = TRUE, col = "orange")
+curve(dpareto(x, fit.pareto$estimate[1], fit.pareto$estimate[2]), add = TRUE, col = "green")
+```
+
+###### **Comentários - 1.d):**
+.
+
+###### **e) Indique qual o modelo que melhor se ajusta aos dados dos sinistros e explique o porquê.**
+```{r}
+#analisar qual distribuição se parece com o histograma dos dados:
+par(mfrow=c(2,2))
+plot.legend <- c("Normal", "Gamma", "Lognormal", "Weibull", "Pareto")
+denscomp(list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), legendtext = plot.legend)
+cdfcomp (list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), legendtext = plot.legend)
+qqcomp  (list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), legendtext = plot.legend)
+ppcomp  (list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), legendtext = plot.legend)
+
+#Analisar com base o Kolmogorov-Smirnov statistic e Akaike's Information Criterion:
+gofstat(list(fit.normal, fit.gamma, fit.lognormal, fit.weibull, fit.pareto), fitnames = c("Normal", "Gamma", "Lognormal", "Weibull", "Pareto"))
+```
+
+###### **Comentários - 1.e):**
+.
+
+#### **Respostas - Questão 2**
+###### **2. Calcule o Prêmio Puro pelo Princípio do Valor Esperado para a Carteira pelo Modelo de Risco Coletivo. Utilize o carregamento de segurança θ = 10%. Utilizará uma base de dados que corresponde aos sinistros de uma carteira de seguro de responsabilidade civil. A distribuição referente à frequência de sinistros por apólice é uma Poisson com parâmetro λ = 400. A quantidade de segurados na carteira é 10000.**
+
+$$PrêmioPuro = E(S)*(1+\theta)$$
+```{r}
+# Dados
+theta = 0.1
+lambda = 400
+n = 10000
+
+# Severidade "X"
+esperanca.x <- mean(sin)
+variancia.x <- var(sin)
+desvio.x <- sd(sin)
+coefvar.x <- desvio.x / esperanca.x
+
+# Frequência "N" ~ Poisson (lambda = 4 )
+lambda = 400
+esperanca.n = variancia.n = lambda
+
+# Sinistro Agregado
+esperanca.s = esperanca.n * esperanca.x
+variancia.s = esperanca.n * variancia.x + (esperanca.x) ^ 2 * variancia.n
+
+# Prêmio Puro
+premiopuro = esperanca.s * (1 + theta)
+premiopuro
+```
+.
+
+###### **Comentários - 2):**
+.
+
+#### **Respostas - Questão 3**
+
+###### **3. Calcule o Prêmio Comercial com carregamento para despesas α = 35%: **
+$$PrêmioComercial = \dfrac{PrêmioPuro}{1-\alpha}$$
+```{r}
+alpha = 0.35
+premiocomercial = premiopuro / (1 - alpha)
+premiocomercial
+```
+.
+
+###### **Comentários - 3):**

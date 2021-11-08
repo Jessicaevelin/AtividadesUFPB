@@ -1,0 +1,3 @@
+"0","par(mfrow=c(2,2))"
+"0","plot.legend <- c(""Weibull"", ""Gamma"", ""Lognormal"")"
+"0","denscomp(list(fit_w, fit_g, fit_ln), legendtext = plot.legend)"

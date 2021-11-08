@@ -1,0 +1,182 @@
+---
+title: "Analisar a distribuição do banco de dados"
+author: "Jessica Evelin"
+date: "7/10/2019"
+---
+
+### **fitditsrplus**
+
+O pacote `fitdistrplus` estima os parâmetros dos modelos pela máxima verossimilhança.
+
+```{r}
+library(fitdistrplus)
+library(actuar)
+```
+
+O banco de dados escolhido é sobre o custo de seguros de carros.
+
+```{r}
+#Carregando dados:
+bancodedados <- read.csv("sinistros.csv", header = TRUE, sep=",")
+
+#Visualizando os dados
+head(bancodedados)
+
+#Criando um vetor apenas com os valores dos sinistros
+dados <- bancodedados$charges     
+```
+
+### **Estatísticas descritivas**
+
+```{r}
+#summary
+summary(dados)
+
+#desvio padrão
+sd(dados)
+
+# histograma
+hist(dados)
+```
+
+A estatística descritiva dos dados diz que o valor médio é de 13270, a mediana que é o valor central é de 9382 e o valor máximo e minimo são respectivamente 63770 e 1122. Esses valores mostram que os custos de seguros estão concentrados em valores menores. o gráfico aparenta ser de calda pesada.
+
+
+### **Ajuste das distribuições**
+#### **Gráficos** 
+
+```{r}
+descdist(dados)
+```
+Analisando o gráfico de Cullen e Frey e desconsiderando beta porque ele é mais usado na  teoria Bayesiana a distribuição que está mais próxima da observação é a gamma, porém não podemos tomar isso como uma única verdade é necessário fazer testes mais rigorosos como Kolmogorov.
+
+Vamos testar as distribuições que mostram no gráfico de Cullen and Frey:
+
+```{r}
+fitn <- fitdist(dados, "norm", method = "mle") #normal
+fitu <- fitdist(dados, "unif", method = "mle") #uniforme
+fite <- fitdist(dados, "exp", method = "mme") #exponencial
+fitl <- fitdist(dados, "llogis", method = "mle") #logistica
+fitln <- fitdist(dados, "lnorm", method = "mle") #lognormal
+fitg <- fitdist(dados, "gamma", method = "mme") #gamma
+fitw <- fitdist(dados, "weibull", method = "mle") #weibull
+```
+
+Fitdist encontra por meio do método dos momentos ou da máxima verossimilhança os parâmetros da distribuição.
+
+Os parâmetros das distribuições acima de forma mais simplificada:
+
+```{r}
+Parametros <-
+  list(
+    "Normal" = fitn$estimate,
+    "Uniforme" = fitu$estimate,
+    "Exponencial" = fite$estimate,
+    "Logística" = fitl$estimate,
+    "Lognormal" = fitln$estimate,
+    "Gama" = fitg$estimate,
+    "Weibull" = fitw$estimate
+  )
+Parametros
+```
+
+Os parâmetros de forma mais completa:
+
+```{r}
+summary(fitn)
+summary(fitu)
+summary(fite)
+summary(fitl)
+summary(fitln)
+summary(fitg)
+summary(fitw)
+```
+
+
+Plotando o histograma com a curva gerada a partir da estimação:
+
+```{r}
+hist(
+  dados,
+  pch = 20,
+  breaks = 20,
+  prob = TRUE,
+  main = ""
+)
+curve(dnorm(x, fitn$estimate[1], fitn$estimate[2]),
+      add = TRUE,
+      col = "blue")
+curve(dunif(x, fitu$estimate[1], fitu$estimate[2]),
+      add = TRUE,
+      col = "red")
+curve(dexp(x, fite$estimate[1], fite$estimate[2]),
+      add = TRUE,
+      col = "brown")
+curve(dlogis(x, fitl$estimate[1], fitl$estimate[2]),
+      add = TRUE,
+      col = "purple")
+curve(dlnorm(x, fitln$estimate[1], fitln$estimate[2]),
+      add = TRUE,
+      col = "green")
+curve(dgamma(x, fitg$estimate[1], fitg$estimate[2]),
+      add = TRUE,
+      col = "yellow")
+curve(dweibull(x, fitw$estimate[1], fitw$estimate[2]),
+      add = TRUE,
+      col = "orange")
+```
+
+Vamos fazer o histograma e a distribuição acumulada:
+
+```{r}
+plotdist(dados, histo = TRUE, demp = TRUE)
+```
+
+Esses quatro gráficos comparam as distribuições teóricas com a distribuição empíricas de acordo com as características de cada uma delas.
+As quatro distribuições mais comuns e que são mais parecidas com a distribuição empírica:
+
+```{r}
+par(mfrow = c(2, 2))
+plot.legend <- c("Exponencial", "Gamma", "Lognormal", "Weibull")
+denscomp(list(fite, fitg, fitln, fitw), legendtext = plot.legend)
+cdfcomp (list(fite, fitg, fitln, fitw), legendtext = plot.legend)
+qqcomp  (list(fite, fitg, fitln, fitw), legendtext = plot.legend)
+ppcomp  (list(fite, fitg, fitln, fitw), legendtext = plot.legend)
+```
+
+De acordo com os gráficos acima a distribuição que melhor explica os dados ou que pelo menos se parece com os reais é a distribuição Lognormal seguida da Gamma.
+
+As distribuições que tem menos características parecidas como  banco de dados, mas está aqui para comparação visual:
+
+```{r}
+par(mfrow = c(2, 2))
+plot.legend <- c("Normal", "Logística", "Uniforme")
+denscomp(list(fitn, fitl, fitu), legendtext = plot.legend)
+cdfcomp (list(fitn, fitl, fitu), legendtext = plot.legend)
+qqcomp  (list(fitn, fitl, fitu), legendtext = plot.legend)
+ppcomp  (list(fitn, fitl, fitu), legendtext = plot.legend)
+```
+
+É fácil ver que nenhuma dessas distribuições é adequada aos dados.
+
+### **Testes** ###
+
+Os testes que serão analisados é o kolmogorov e o Akaike para esses quanto menor o valor melhor, pois eles medem a diferença numérica entre a distribuição empírica e teórica.
+
+```{r}
+gofstat(
+  list(fitn, fitu, fitln, fitw, fite, fitl, fitg),
+  fitnames = c(
+    "Normal",
+    "Uniforme",
+    "Lognormal",
+    "Weibull",
+    "Exponencial",
+    "Logística",
+    "Gamma"
+  )
+)
+```
+
+De acordo com os testes Kolgomorov e Akaike o melhor é Lognormal (0.0365844, 27923.58) e em segundo Gamma (0.07157911, 28016.18), pois essa distribuições teóricas tem menor diferenças da distribuição real dos dados.
+

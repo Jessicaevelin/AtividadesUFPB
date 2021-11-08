@@ -1,0 +1,5 @@
+"0","#Pacotes necessários"
+"0","library(readr)"
+"0","library(fitdistrplus)"
+"0","library(MASS)"
+"0","library(actuar)"

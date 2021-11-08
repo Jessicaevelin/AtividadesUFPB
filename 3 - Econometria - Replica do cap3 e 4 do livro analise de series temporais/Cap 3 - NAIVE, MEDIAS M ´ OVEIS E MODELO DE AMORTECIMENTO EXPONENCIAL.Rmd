@@ -1,0 +1,16 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Modelo naive e snaive
+```{r eval=FALSE, include=FALSE}
+install.packages("forecast")
+```
+
+```{r include=FALSE}
+library("forecast")
+```
+```{r}
+summary(naive(gold, h=12)
+```
+

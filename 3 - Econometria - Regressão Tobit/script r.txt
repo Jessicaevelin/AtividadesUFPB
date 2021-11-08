@@ -1,0 +1,41 @@
+#instalando
+install.packages("rms")
+require(rms)
+
+#definindo diretorio
+setwd("c:/users/pedro/desktop/pedro")
+
+#defiindo base de dados
+dados<-read.table("dados.txt",header=T)
+dados
+
+#verifica as variaveis
+colnames(dados)
+
+#resumo estatistico
+summary(dados[,2:5])
+y<-Coluna1~cilindros+potencia+peso
+
+modelo<-lrm(y,data=dados) 
+modelo
+
+coeficiente<-cbind(modelo$coeff[2:5],exp(modelo$coeff[2:5]),exp(modelo$coeff[2:5])-1)
+                    
+colnames(coeficiente)<-c("beta","exp(beta)","exp(beta)-1")
+coefieciente
+
+write.table(coeficiente,"modelo.logistico.csv",sep=";",dec=",")
+                    
+vif(modelo)
+                    
+probabilidades<-predict(modelo,data=dados,type="fitted")
+                    
+preditos<-round(probabilidades)
+preditos
+                    
+attach(dados)
+table(Coluna1,preditos)  
+
+plot(probabilidades[1:19055],pch=18,col="blue",xlim=c(1,38114),ylim=c(0,1),xlab="",ylab="")
+points(19056:38114,probabilidades[19056:38114],pch=18,col="pink")
+abline(h=0.5,col="blue",lty=2)k

@@ -1,0 +1,16 @@
+"0","require(""lmtest"")
+"
+"2","Carregando pacotes exigidos: lmtest
+"
+"2","package ‘lmtest’ was built under R version 3.6.1"
+"2","Carregando pacotes exigidos: zoo
+"
+"2","
+Attaching package: ‘zoo’
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+"

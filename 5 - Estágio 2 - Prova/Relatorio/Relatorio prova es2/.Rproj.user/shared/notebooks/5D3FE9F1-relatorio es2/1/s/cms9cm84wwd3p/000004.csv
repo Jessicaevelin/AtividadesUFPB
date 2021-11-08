@@ -1,0 +1,2 @@
+"0","#histograma"
+"0","hist(sin, main = ""Histograma dos sinistros"", xlab = ""Valores dos sinistros"", ylab = ""Frequência"", breaks = 90)"

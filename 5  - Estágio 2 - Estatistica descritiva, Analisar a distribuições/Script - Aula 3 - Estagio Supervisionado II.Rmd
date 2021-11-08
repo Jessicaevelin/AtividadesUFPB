@@ -1,0 +1,150 @@
+---
+title: "Aula 3 - Estágio Supervisionado II"
+author: "Filipe Duarte"
+date: "8/14/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+# Aula 3 
+
+Nesta aula veremos como estimar os parâmetros das distribuições pelo método da máxima verossimilhança. Em seguida, aprenderemos como selecionar o modelo com o melhor ajuste para a amostra. 
+
+## Método da Máxima Verossimilhança
+
+O método da máxima verossimilhança é um método para estimar os parâmetros de um modelo probabilístico. Dessa maneira, dada uma amostra e dado um modelo probabilístico, a estimativa por máxima verossimilhança estima os valores para os diferentes parâmetros do modelo.
+
+Considerando $X$ uma variável aleatória e sendo $f(x,\theta)$ a função de densidade, onde o parâmetro $\theta$ é desconhecido. Dessa forma, dada uma amostra aleatória simples de $X$,de tamanho $n$, $X_1, X_2, ..., X_n$, e sejam $x_1, x_2, ..., x_n$ os valores observados, a função de verossimilhança $L$ define-se por:
+
+$$
+L(\theta; x_1,..., x_n) = f(x_1;\theta)*...*f(x_n;\theta).
+$$
+
+Dessa forma, dizemos que $\hat{\theta}$ é um estimador de máxima verossimilhança (EMV) para  $\theta = \theta_0$.
+
+
+## fitditsrplus
+
+O pacote `fitdistrplus` estima os parâmetros dos modelos pela máxima verossimilhança. Portanto, faremos uso dessa técnica para estimar os parâmetros dos modelos para os dados dos sinistros. 
+
+Carregando biblioteca:
+
+```{r}
+library(fitdistrplus)
+```
+
+Carregando dados:
+
+```{r}
+sinistro <- read.csv("sinistros.csv", header = TRUE, sep=",")
+```
+
+Visualizando os dados:
+
+```{r}
+head(sinistro)
+```
+
+Criando um vetor apenas com os valores dos sinistros:
+
+```{r}
+sinistro <- sinistro$x
+```
+
+Estatísticas descritivas:
+
+```{r}
+# summary
+summary(sinistro)
+# desvio padrão
+sd(sinistro)
+```
+
+Histograma
+
+```{r}
+# histograma
+hist(sinistro)
+```
+
+# Ajuste das distribuições
+
+```{r}
+descdist(sinistro)
+```
+
+Vamos testar para gamma, weibull e lognormal:
+
+```{r}
+fit <- fitdist(sinistro, "gamma")
+fitw <- fitdist(sinistro, "weibull")
+fitln <- fitdist(sinistro, "lnorm")
+```
+
+
+Vamos plotar o histograma com a curva gerada a partir da estimação:
+
+```{r}
+hist(sinistro, pch=20, breaks = 20, prob = TRUE, main = "")
+curve(dgamma(x, fit$estimate[1], fit$estimate[2]), add = TRUE, col = "green")
+curve(dweibull(x, fitw$estimate[1], fitw$estimate[2]), add = TRUE, col = "red")
+curve(dlnorm(x, fitln$estimate[1], fitln$estimate[2]), add = TRUE, col = "blue")
+```
+
+Vamos fazer o histograma e a distribuição acumulada:
+
+```{r}
+plotdist(sinistro, histo = TRUE, demp = TRUE)
+```
+
+Agora vamos estimar novamente para criar as 3 funções
+
+```{r}
+fit_w  <- fitdist(sinistro, "weibull")
+fit_g  <- fitdist(sinistro, "gamma")
+fit_ln <- fitdist(sinistro, "lnorm")
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot.legend <- c("Weibull", "Gamma", "Lognormal")
+denscomp(list(fit_w, fit_g, fit_ln), legendtext = plot.legend)
+cdfcomp (list(fit_w, fit_g, fit_ln), legendtext = plot.legend)
+qqcomp  (list(fit_w, fit_g, fit_ln), legendtext = plot.legend)
+ppcomp  (list(fit_w, fit_g, fit_ln), legendtext = plot.legend)
+```
+
+Testando outras distribuições:
+
+Carregar outro pacote:
+
+```{r}
+library(actuar)
+```
+
+Testando a loglogistica e pareto:
+
+```{r}
+fit_ll <- fitdist(sinistro, "llogis", start = list(shape = 1, scale = 500))
+fit_P  <- fitdist(sinistro, "pareto", start = list(shape = 1, scale = 500))
+```
+
+```{r}
+summary(fit_ll)
+summary(fit_P)
+```
+```{r}
+par(mfrow=c(2,2))
+plot.legend <- c("gamma", "weibull", "loglogistic", "Pareto")
+denscomp(list(fit_g,fit_w, fit_ll, fit_P), legendtext = plot.legend)
+cdfcomp (list(fit_g,fit_w, fit_ll, fit_P), legendtext = plot.legend)
+qqcomp  (list(fit_g,fit_w, fit_ll, fit_P), legendtext = plot.legend)
+ppcomp  (list(fit_g,fit_w, fit_ll, fit_P), legendtext = plot.legend)
+```
+
+```{r}
+gofstat(list(fit_w, fit_g, fit_ln, fit_ll, fit_P), fitnames = c("Weibull","Gamma","LogNormal", "Loglogística", "Pareto"))
+```
+

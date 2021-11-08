@@ -1,0 +1,1 @@
+"0","curve(dlnorm(x, fitln$estimate[1], fitln$estimate[2]), add = TRUE, col = ""blue"")"

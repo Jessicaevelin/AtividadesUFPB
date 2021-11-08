@@ -1,0 +1,3 @@
+"0",""
+"0","legend('bottom',c('Passeio aleatório','Ruído branco'),"
+"0","  lwd=2, col=c('blue','red'), bty='n')"

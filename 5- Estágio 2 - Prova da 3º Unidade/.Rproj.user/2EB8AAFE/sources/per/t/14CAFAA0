@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583373669368.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "14CAFAA0",
+    "lastKnownWriteTime" : 4189032028197581669,
+    "last_content_update" : 1583373669368,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "AA35A24E",
+        "caption" : "grupo4",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=grupo4&cache_key=AA35A24E",
+        "displayedObservations" : 400,
+        "environment" : "",
+        "expression" : "grupo4",
+        "object" : "grupo4",
+        "preview" : 0,
+        "totalObservations" : 400,
+        "variables" : 2
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

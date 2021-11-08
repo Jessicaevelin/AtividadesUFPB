@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Importando os dados
+```{r}
+dados <- read.delim("D:/Google Drive/2 - Ufpb/P5/Teoria/Prova/dados.txt")
+dados
+```
+# X~gama (a,b) #
+$$
+E[x]=a/b
+$$
+$$
+V[x]=a/b^2
+$$
+Média de X
+```{r}
+Ex <- mean(dados$x)
+Ex
+```
+Variância de X
+```{r}
+Vx <- var(dados$x)
+Vx
+```
+Desvio Padrão de X
+```{r}
+Dpx<- sd(dados$x)
+Dpx
+```
+Encontrando os Parâmetros alfa e beta
+```{r}
+b=c()
+a=c()
+```
+Isolando b da função de variancia:
+
+  Vx=a/b^2
+  
+  Vx=Ex*b/b^2
+  
+  Vx=Ex/b
+  
+  b=Ex/Vx
+  
+```{r}
+b=(Ex)/(Vx)
+b
+```
+isolando alfa da função da média:
+
+  Ex=a/b
+  
+  a=Ex*b
+  
+```{r}
+a=(Ex)*b
+a
+```

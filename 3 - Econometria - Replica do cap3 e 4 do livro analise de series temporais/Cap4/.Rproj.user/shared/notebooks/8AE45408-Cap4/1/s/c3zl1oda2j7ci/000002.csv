@@ -1,0 +1,4 @@
+"0","y <- read.table('table17-2.txt', header=T)$PPDI"
+"2","cannot open file 'table17-2.txt': No such file or directory"
+"2","Error in file(file, ""rt"") : cannot open the connection
+"

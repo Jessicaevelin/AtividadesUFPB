@@ -1,0 +1,164 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+yt <- pib
+```
+
+# 5 Função de autocorrelação - pág 38 #
+
+```{r}
+TT <- 200
+
+ar1 <- acf(arima.sim(model=list(ar=0.9), n=TT),
+  ylab=expression(Y[t]),
+  main=expression(paste("AR(1) com ", theta, "=0.9")))
+```
+
+# 6.  Função de autocorrelação parcial - pág 39 #
+
+```{r}
+TT <- 200
+
+ar1 <- pacf(arima.sim(model=list(ar=0.9), n=TT),
+  ylab=expression(Y[t]),
+  main=expression(paste("AR(1) com ", theta, "=0.9")))
+```
+
+
+#8. O teste de Dickey-Fuller #
+  
+```{r echo=FALSE}
+plot(yt,
+  ylab=expression(yt),
+  main='',
+  bty='l',
+col='blue')
+grid(col='darkgrey', lwd=2)
+```
+  
+```{r}
+summary(lm(diff(yt)~lag(yt,-1)[-length(yt)] - 1))
+```
+
+-----
+Intalando Pacotes necessarios para continuar os testes.
+
+```{r eval=FALSE, include=FALSE}
+install.packages("urca")
+```
+
+```{r include=FALSE}
+require(urca)
+```
+
+## 8.3 Teste Dickey-Fuller - Pág 48 até 51 ##
+
+```{r}
+summary(ur.df(yt, type='none', lags=0))
+```
+
+```{r}
+dyt <- diff(yt)
+summary(ur.df(dyt, type='none', lags=0))
+```
+
+```{r}
+plot(dyt,
+  ylab=expression(dyt),
+  main='',
+  bty='l',
+col='blue')
+grid(col='darkgrey', lwd=2)
+```
+
+```{r}
+ytanalise = ts(cumsum(rnorm(200)), end=c(2020,12), freq=12)
+plot(ytanalise)
+grid(col='darkgrey', lwd=2)
+
+```
+
+## 8.4 Teste Phillips-Perron - Pág 53 ##
+
+```{r}
+set.seed(12)
+t <- 200
+y1 <- ts(cumsum(rnorm(t)))
+y2 <- rnorm(t)
+```
+
+
+```{r}
+ts.plot(y1, y2,
+  ylab='', xlab='Tempo',
+  main='',
+  col=c('blue', 'red'),
+  lwd=2)
+grid(col='darkgrey', lwd=2)
+
+legend('bottom',c('Passeio aleatório','Ruído branco'),
+  lwd=2, col=c('blue','red'), bty='n')
+```
+
+```{r}
+PP.test(y1)
+```
+
+```{r}
+PP.test(y2)
+```
+
+## 8.5 O teste ADF sequencial - Pág 54 ##
+
+```{r eval=FALSE, include=FALSE}
+#Esse ambiente era o que estava no livro, criei ele novamente logo abaixo e colocando o banco de dados airpassengers
+y <- read.table('table17-2.txt', header=T)$PPDI
+y <- ts(y, start = 1970, freq=1)
+```
+
+```{r}
+y<- pib
+```
+
+```{r}
+plot(y, col='blue', main='Renda disponível',
+bty='l', xlab='Ano', ylab='$')
+```
+
+```{r}
+adf.y3 <- ur.df(y, type='trend', lags=3)
+
+acf(adf.y3@res, ci.type='ma', main='ACF Resíduos - ADF com 3 defasagens',
+  xlab='Defasagem')
+```
+
+```{r}
+adf.y2 <- ur.df(y, type='trend', lags=2)
+
+acf(adf.y2@res, ci.type='ma', main='ACF Resíduos - ADF com 2 defasagens',
+xlab='Defasagem')
+```
+
+```{r}
+adf.y0 <- ur.df(y, type='trend', lags=0)
+
+acf(adf.y0@res, ci.type='ma', main='ACF Resíduos - ADF sem defasagem',
+xlab='Defasagem')
+```
+
+
+```{r}
+summary(adf.y3)
+summary(adf.y2)
+summary(adf.y0)
+```
+
+
+```{r}
+adfd.y <- ur.df(y, type='drift', lags=0)
+
+summary(adfd.y)
+```

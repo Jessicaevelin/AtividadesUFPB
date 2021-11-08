@@ -1,0 +1,97 @@
+```{r}
+require(data.table)
+require(ggplot2)
+require(normtest)
+require(tseries)
+require(vars)
+require(fBasics)
+require(het.test)
+```
+
+Importando o banco de dados
+
+```{r}
+dados <- read.delim("D:/Google Drive/2 - Ufpb/P5/Econometria/Series Temporais/SeriesTemporais/dados.txt", header=TRUE, row.names=1)
+dados
+class(dados)
+
+```
+
+Separando as Variaveis da tabela
+
+```{r}
+tic<-dados[,1]    #ticket
+ben<-dados[,2]    #beneficiarios
+sel<-dados[,4]    #taxa de juros selic
+inf<-dados[,5]    # inflação
+vcm<-dados[,6]    #vcmh
+des<-dados[,8]    #despesas hospitalares
+end<-dados[,11]   #endividamento familiar
+           
+```
+
+Transformando em série temporal
+
+```{r}
+
+tic<-ts(tic, frequency=1, start=c(2007,1))
+tic
+
+ben<-ts(ben, frequency=1, start=c(2007,1))
+ben
+       
+sel<-ts(sel, frequency=1, start=c(2007,1))
+sel
+
+inf<-ts(inf, frequency=1, start=c(2007,1))
+inf
+
+vcm<-ts(vcm, frequency=1, start=c(2007,1))
+vcm
+
+des<-ts(des, frequency=1, start=c(2007,1))
+des
+
+end<-ts(end, frequency=1, start=c(2007,1))
+end
+
+```
+
+Estatistica Descritiva
+
+```{r}
+summary(dados)
+```
+
+Medidas de Disperção
+
+Variância
+
+```{r}
+var(tic)
+var(ben)
+var(sel)
+var(inf)
+var(vcm)
+var(des)
+var(end)
+```
+
+Desvio Padrão
+
+```{r}
+sd(tic)
+sd(ben)
+sd(sel)
+sd(inf)
+sd(vcm)
+sd(des)
+sd(end)
+```
+
+Amplitude Total e Amplitude Interquartil
+
+```{r}
+
+```
+

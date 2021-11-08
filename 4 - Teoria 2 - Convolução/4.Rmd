@@ -1,0 +1,78 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+-------
+
+Questão 4 a) - lista da 2º Unidade
+ Probabilidade do sinistro agregado ser igual a 0,1,2,3,4
+    X~P(x=X)=0,1*x
+      N~Binomial (10,0.1)
+
+-------
+Ativar o pacote
+
+```{r message=FALSE}
+require(actuar)
+```
+
+valores de X
+
+```{r}
+x =c(0:4)
+```
+
+Probabilidade de N~Binomial(10,0.1)
+
+```{r}
+pn<-c(dbinom(x,10,0.1))
+pn
+```
+
+Probabilidade de X~P(X=0,1*x)
+
+```{r}
+fx<-c(0.1*x)
+
+fx
+```
+
+
+função de fs
+  x.scale = valor monetário de 1 sinistro
+  
+```{r}
+fs <- aggregateDist("convolution", model.freq = pn, model.sev = fx, x.scale = 1)
+
+```
+
+estatistica descritiva do fs
+
+```{r}
+summary(fs)
+```
+
+valores de fs
+  diff(Fs(1 * (intervalo do fs(0) até fs(4)))
+
+```{r}
+fscol<-c(c(fs(0), diff(fs(1 * 0:4))))
+
+fscol
+```
+
+Grafico da fs
+
+```{r}
+plot(fs)
+```
+
+FSCOL (soma acumulada dos valores de fs)
+
+```{r}
+FSCOL <- cumsum(fscol)
+FSCOL
+```
+

@@ -1,0 +1,5 @@
+"0","adf6 <- ur.df(y, type='drift', lags=6)"
+"0",""
+"0","acf(adf6@res, ci.type='ma',"
+"0","  main='Resíduos de teste ADF - 6 defasagens',"
+"0","  xlab='Defasagem')"

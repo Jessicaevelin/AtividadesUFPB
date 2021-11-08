@@ -1,0 +1,306 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r eval=FALSE, include=FALSE}
+install.packages("TTR")
+install.packages("forecast")
+install.packages("ggplot2")
+```
+
+```{r include=FALSE}
+require("TTR")
+require("forecast")
+require("ggplot2")
+```
+
+
+```{r}
+dados <- read.delim2("D:/Google Drive/2 - Ufpb/P5/Econometria/Series/Dados/cap3.txt", row.names=1)
+dados
+```
+
+--------------------------------------------------------------------------------
+
+#Modelo Naive
+
+  A previsão dele é igual ao valor da última observação ou quando há sazonalidade, a previsão de um mês futuro é igual ao valor da última observação.
+  
+```{r}
+summary(naive(dados[,1],h=27))
+summary(naive(dados[,2],h=27))
+summary(naive(dados[,3],h=27))
+```
+
+#Gráfico Naive
+
+  Mostra que a previsão para qualquer tempo futuro é igual ao último valor observado e o intervalo de confiança vai aumentando com o tempo.
+  
+```{r}
+plot(naive(dados[,1],h=12),include = 200)
+plot(naive(dados[,2],h=12),include = 200)
+plot(naive(dados[,3],h=12),include = 200)
+```
+
+#Modelo Snaive
+
+  Quando comparado a acurácia dos dois modelos, percebe-se que o MAPE e RMSE do modelo snaive é menor.
+
+```{r}
+summary(snaive(dados[,1],h=12))
+summary(snaive(dados[,2],h=12))
+summary(snaive(dados[,3],h=12))
+```
+
+#Gráfico Snaive
+
+  Mostra que a previsão para qualquer tempo futuro é igual ao último ano,
+por exemplo, para qualquer janeiro futuro vai ser igual ao último valor de janeiro observado,e o intervalo de confiança vai aumentando com os anos. 
+
+```{r}
+plot(snaive(dados[,1]))
+plot(snaive(dados[,2]))
+plot(snaive(dados[,3]))
+```
+
+--------------------------------------------------------------------------------
+
+#Média móvel centrada
+
+  Média móvel é uma média que se movimenta, ou seja, todas as médias móveis têm como padrão um intervalo de período fixo ("janela") onde para cada nova informação que entrar, retira-se a mais antiga e recalcula-se a média.
+  
+```{r}
+mm_centrada_DE6 <- ma(dados[,1],order=6)
+mm_centrada_FP6 <- ma(dados[,2],order=6)
+mm_centrada_TD6 <- ma(dados[,3],order=6)
+```
+
+```{r}
+mm_centrada_DE12 <- ma(dados[,1],order=12)
+mm_centrada_FP12 <- ma(dados[,2],order=12)
+mm_centrada_TD12 <- ma(dados[,3],order=12)
+```
+
+```{r}
+summary(mm_centrada_DE6)
+summary(mm_centrada_FP6)
+summary(mm_centrada_TD6)
+```
+```{r}
+summary(mm_centrada_DE12)
+summary(mm_centrada_FP12)
+summary(mm_centrada_TD12)
+```
+
+  É possível notar que quanto maior é a "janela", mais suavizado ficar a série, e quanto menor é a "janela", mais próximo da série original fica o ajuste.
+
+```{r}
+plot(dados[,1])
+lines(mm_centrada_DE6,col="red",lty=5,lwd =2)
+lines(mm_centrada_DE12,col="blue",lty=1 , lwd =3)
+legend('topleft', legend=c("Deposito em poupança", "mm_centrada_DE6","mm_centrada_DE12"),
+bty = "n",col=c("black","red", "blue"), lty=c(1,5,1), cex=0.8,lwd =c(1,2,3))
+
+
+plot(dados[,2])
+lines(mm_centrada_FP6,col="red",lty=5,lwd =2)
+lines(mm_centrada_FP12,col="blue",lty=1 , lwd =3)
+legend('topleft', legend=c("Folha de Pagamento", "mm_centrada_DE6","mm_centrada_DE12"),
+bty = "n",col=c("black","red", "blue"), lty=c(1,5,1), cex=0.8,lwd =c(1,2,3))
+
+plot(dados[,3])
+lines(mm_centrada_TD6,col="red",lty=5,lwd =2)
+lines(mm_centrada_TD12,col="blue",lty=1 , lwd =3)
+legend('topleft', legend=c("Taxa de desemprego", "mm_centrada_DE6","mm_centrada_DE12"),
+bty = "n",col=c("black","red", "blue"), lty=c(1,5,1), cex=0.8,lwd =c(1,2,3))
+```
+
+  Série suavizada sem influênica da sazonalidade, foi utilizada uma "janela" de tamanho 12.
+
+```{r}
+plot(dados[,1])
+mm_centrada_DE12 <- ma(dados[,1],order=12)
+lines(mm_centrada_DE12,col="red")
+
+plot(dados[,2])
+mm_centrada_FP12 <- ma(dados[,2],order=12)
+lines(mm_centrada_FP12,col="red")
+
+plot(dados[,3])
+mm_centrada_TD12 <- ma(dados[,3],order=12)
+lines(mm_centrada_TD12,col="red")
+```
+
+#Média Móvel Simples
+# z = Série temporal
+# r = Tamanho
+# l = Número
+
+```{r}
+zDE <- dados[,1]
+lDE <- 15
+rDE <- 288
+IC_DE <- function(zDE,rDE,lDE){
+smadfDE <- SMA(zDE,rDE)
+IC_IDE <- rep(smadfDE[length(zDE)],lDE) - 1.96*sd(zDE)/sqrt(rDE)
+IC_SDE <- rep(smadfDE[length(zDE)],lDE) + 1.96*sd(zDE)/sqrt(rDE)
+previsaoDE <- rep(smadf[length(zDE)],lDE)
+cbind(IC_IDE,previsaoDE,IC_SDE)
+}
+
+
+zFP <- dados[,2]
+lFP <- 15
+r <- 288
+IC_FP <- function(zFP,rFP,lFP){
+smadfFP <- SMA(zFP,rFP)
+IC_IFP <- rep(smadfFP[length(zFP)],l) - 1.96*sd(zFP)/sqrt(rFP)
+IC_SFP <- rep(smadfFP[length(zFP)],l) + 1.96*sd(zFP)/sqrt(rFP)
+previsaoFP <- rep(smadfFP[length(zFP)],lFP)
+cbind(IC_IFP,previsaoFP,IC_SFP)
+}
+
+zTD <- dados[,3]
+lTD <- 15
+rTD <- 288
+IC_TD <- function(zTD,rTD,lTD){
+smadfTD <- SMA(zTD,rTD)
+IC_ITD <- rep(smadfTD[length(zTD)],lTD) - 1.96*sd(zTD)/sqrt(rTD)
+IC_STD <- rep(smadfTD[length(zTD)],lTD) + 1.96*sd(zTD)/sqrt(rTD)
+previsaoTD <- rep(smadfTD[length(zTD)],lTD)
+cbind(IC_ITD,previsaoTD,IC_STD)
+}
+
+```
+
+  Mostra a série suavizada que comeca no 12º mes. A previsão para os meses futuros (última média móvel de um período de 12 meses).
+
+```{r eval=FALSE, include=FALSE}
+z<-c(dados[,1])
+r<-12
+l<-12
+a <- IC_MMS(z,r,l)
+b <- c(z,a[,1])
+smadf <- SMA(z,r)
+grafico <- ggplot(data=data.frame(b))+ geom_line(aes(c(1:length(b)),b))+
+geom_smooth(data=data.frame(a),
+aes(ymin = IC_I, ymax = IC_S,x = c((length(b)-l+1):length(b)),
+y = Previsao), stat="identity")+
+geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_S))+
+geom_line(data=data.frame(a),aes(c((length(b)-l+1):length(b)),IC_I))+
+geom_line(data = data.frame(smadf),aes(c(1:(length(b)-l)),smadf),
+na.rm = T,col="red")+
+labs(title =" Depositos em poupança", x = "Tempo", y = "Dados")
+
+grafico
+```
+
+#Modelos de suavização exponencial
+#Modelos para séries localmente constantes
+#Suavização exponencial simples(SES)
+
+  A previsão desse modelo é igual ao último valor exponencial suavizado obtido.
+
+```{r}
+serieDE = ts(dados[,1],start = c(1991,1),frequency = 1)
+serieFP = ts(dados[,2],start = c(2000,1),frequency = 1)
+serieTD = ts(dados[,3],start = c(1991,1),frequency = 1)
+```
+
+```{r}
+ajusteDE<-HoltWinters((serieDE), beta=FALSE, gamma=FALSE)
+ajusteDE
+ajusteFP<-HoltWinters((serieFP), beta=FALSE, gamma=FALSE)
+ajusteFP
+ajusteTD<-HoltWinters((serieTD), beta=FALSE, gamma=FALSE)
+ajusteTD
+
+```
+
+
+```{r}
+plot(ajusteDE)
+plot(ajusteFP)
+plot(ajusteTD)
+```
+
+```{r eval=FALSE, include=FALSE}
+previsaoDE<-forecast.HoltWinters(ajusteDE)
+plot(previsaoDE)
+
+previsaoFP<- forecast.HoltWinters(ajusteFP)
+plot(previsaoFP)
+
+previsaoTD<-forecast.HoltWinters(ajusteTD)
+plot(previsaoTD)
+```
+#Modelo para séries com tendência
+  Suavização exponencial de Holt (SEH)
+
+```{r}
+ajuste_com_tendenciaDE<-HoltWinters(dados[,1], gamma=FALSE)
+ajuste_com_tendenciaDE
+ajuste_com_tendenciaFP<-HoltWinters(dados[,2], gamma=FALSE)
+ajuste_com_tendenciaFP
+ajuste_com_tendenciaTD<-HoltWinters(dados[,3], gamma=FALSE)
+ajuste_com_tendenciaTD
+
+```
+
+
+```{r}
+plot(dados[,1])
+lines(fitted(ajuste_com_tendenciaDE)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("Depositos em poupança", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,2])
+lines(fitted(ajuste_com_tendenciaFP)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("Folha de Pagamentos", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+plot(dados[,3])
+lines(fitted(ajuste_com_tendenciaTD)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("Taxa de desemprego", "ajuste_com_tendencia"),bty = "n",
+       col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+```
+
+
+```{r eval=FALSE, include=FALSE}
+previsao_com_tendenciaDE<-forecast.HoltWinters(ajuste_com_tendenciaDE(dados[,1]))
+plot(previsao_com_tendenciaDE)
+previsao_com_tendenciaFP<-forecast.HoltWinters(ajuste_com_tendenciaFP(dados[,2]))
+plot(previsao_com_tendenciaFP)
+previsao_com_tendenciaTD<-forecast.HoltWinters(ajuste_com_tendenciaTD(dados[,3]))
+plot(previsao_com_tendenciaTD)
+
+
+```
+#Modelo para séries sazonais
+#Suavização exponencial de Holt-Winters (HW)
+#Modelo Aditivo
+#Modelo Multiplicativo
+
+  O HW ajuda a descobrir padrão de comportamento mais complexos. A previsão desse modelo é feita de acordo com a série que pode ser Sazonal Aditiva ou Sazonal Multiplicativa.
+
+```{r}
+ajuste_com_sazonalidade<-HoltWinters(AirPassengers)
+ajuste_com_sazonalidade
+```
+
+```{r}
+plot(AirPassengers)
+lines(fitted(ajuste_com_sazonalidade)[,1],col="red",lty=2,lwd =3)
+legend('topleft', legend=c("AirPassengers", "ajuste_com_sazonalidade"),
+  bty = "n",col=c("black","red"), lty=c(1,2), cex=0.8,lwd =c(1,3))
+
+```
+```{r eval=FALSE, include=FALSE}
+previsao_com_sazonalidade<-forecast.HoltWinters(ajuste_com_sazonalidade)
+plot(previsao_com_sazonalidade)
+```
+
+
+
+
+```

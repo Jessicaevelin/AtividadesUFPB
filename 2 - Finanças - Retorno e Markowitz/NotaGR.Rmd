@@ -1,0 +1,38 @@
+---
+title: "Notas de Estudos - Gestão de Risco"
+output: html_notebook
+---
+
+```{r}
+library(tseries)
+library(BETS)
+```
+
+```{r}
+remove(list=ls())
+```
+
+
+```{r}
+codigo <- "JHSF3.SA"
+dataInicial <- "2021-01-01"
+dataFinal <- "2021-11-29"
+```
+
+
+```{r warning=FALSE}
+precos_total <- na.omit(get.hist.quote(codigo, quote = "Close", start = dataInicial, end = dataFinal))
+
+Ibov <- na.omit(get.hist.quote("^BVSP", quote = "Close", start = dataInicial, end = dataFinal))
+
+selic <- BETSget(11, from = dataInicial, to = dataFinal)
+
+length(Ibov)
+length(precos_total)
+length(selic)
+```
+
+```{r}
+precos <- tail(precos_total, 60)
+```
+

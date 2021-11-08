@@ -1,0 +1,77 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+-------
+
+Questão 4 b) - lista da 2º Unidade
+ Probabilidade do sinistro agregado ser igual a 0,1,2,3,4
+    X~Exponencial(0.1)
+      N~Poisson(0.1)
+      
+-------
+
+Ativar o pacote
+
+```{r}
+require(actuar)
+```
+
+valores de X
+
+```{r}
+x=c(0:4)
+```
+
+Probabilidade de X~exponencial(0.1))
+
+```{r}
+fx<-c( dexp(x,0.1))
+fx
+```
+
+Probabilidade de N~Poisson(0.1)
+
+```{r}
+
+pn <-c(dpois(x,0.1))
+pn
+
+````
+
+
+função de fs
+  x.scale = valor monetário de 1 sinistro
+  
+```{r}
+fs <- aggregateDist("convolution", model.freq = pn, model.sev = fx, x.scale = 1)
+
+```
+
+estatistica descritiva
+
+```{r}
+summary(fs)
+```
+
+valores de fs
+  diff(Fs(1 * (intervalo do fs(0) até fs(4)))
+
+```{r}
+fscol<-c(c(fs(0), diff(fs(1 * 0:4))))
+fscol
+``````
+
+Gráfico de fs
+
+```{r}
+plot(fs)
+```
+
+FSCOL (soma acumulada dos valores de fs)
+
+```{r}
+FSCOL <- cumsum(fscol)
+FSCOL
+```

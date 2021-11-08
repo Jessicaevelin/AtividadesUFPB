@@ -1,0 +1,121 @@
+ESTIMAÇÂO E PREVISÃO DO MODELO ARIMA
+```{r}
+#http://www.face.ufg.br/siteface_files/midias/original-nt-002.pdf
+```
+
+
+```{r}
+dados <- read_excel("D:/Google Drive/2 - Ufpb/P5/Econometria/Series/Dados/pib.xls", 
+     col_types = c("text", "numeric"))
+pib<-ts(dados[,2],start=1990,freq=12)
+attach(dados)
+names (dados)
+```
+
+
+```{r}
+# Primeira diferença da série vendas
+diff(pib)
+```
+
+```{r}
+#logaritmo da série vendas
+log(pib)
+```
+
+```{r}
+#2.1 Gráfico da série vendas
+plot.ts(pib)
+plot.ts(diff(pib))
+pib<-ts(dados[,2],start=1990,freq=12)
+```
+
+```{r}
+#2.2. Para fazer a análise da Função de Autocorrelação (FAC) e Autocorrelação parcial (FACp) com defasagem 36:
+acf(pib, lag.max=36)
+pacf(pib, lag.max=36)
+acf(diff(pib), lag.max=36)
+pacf(diff(pib), lag.max=36) 
+
+```
+```{r}
+#2.3. Sazonalidade pode ser detectada pelo comando (stl):
+# Decomposição da série temporal em tendência, sazonalidade e resto (componente irregular)
+
+plot(stl(log(pib), "periodic"))
+
+#Agora usando o comando decompose(), se decompõe a série em seus componentes tendência, aleatório, e sazonal.
+
+x<- decompose(pib)
+plot(x)
+```
+```{r}
+#2.4. Estimando o modelo ARIMA com comando:
+ #Comando geral: arima(data,order=c(p,d,q))
+arima(pib,order=c(2,1,1))
+x.fit <- arima(pib,order=c(2,1,1)) 
+```
+```{r}
+#2.5. Estimando o modelo ARIMA sazonal
+arima(pib,order=c(2,1,1),seasonal=list(order=c(2,1,1),period=12))
+y.fit<-arima(pib,order=c(2,1,1),seasonal=list(order=c(2,1,1),period=12))
+y.fit
+```
+```{r}
+#2.6. Checagem e diagnóstico
+  #Com o comando tsdiag é possível analisar os gráficos dos resíduos ( O modelo deve apresentar os resíduos estacionários, com média zero e variância constante)
+    #lembre-se que o modelo ARIMA(2,1,1) foi chamado de x
+z<-arima(pib,order=c(2,1,1),seasonal=list(order=c(2,1,1),period=12))
+tsdiag(z)
+```
+
+```{r}
+#Análise da estatística de Box–Pierce (e Ljung–Box) 
+Box.test(z$residuals,lag=1)
+
+```
+```{r}
+#2.7. Previsão usando o modelo ( Forecasting)
+  #Use o comando predict()
+    #O termo n.ahead= 4, mostra quatro passos a frente e lembre-se que x é o nosso modelo ARIMA(2,1,1). Se você digitar forecast no R e der enter, irá aparecer os 4 dados previstos. 
+
+require(forecast)
+forecast<-predict(z,n.ahead=10)
+```
+
+```{r}
+#2.8. Gráfico dos resultados
+ #Para fazer um gráfico com os valores mínimos e máximos das escalas das coordenadas e das abscissas, primeiramente deve-se encontrar esses valores com o comando summary.
+summary (pib)
+```
+
+```{r}
+#Lembre-se para fazer o gráfico deve-se aumentar o valor máximo e também o tempo deve ser alterado, já considerando a previsão dos passos a frente.
+  # Como o dados do pib começam em 1990 e acabam em 2019, então como vamos prever 4 anos fica de 1990-2023.
+
+plot(pib,xlim=c(1990.01,1995),ylim=c(0, 100))
+
+```
+
+```{r}
+#Para considerar um intervalo de conficanca de 95% , usamos dois desvio-padrao (+/- 2)
+plot(previsao$pred+2*previsao$se,lty=5)
+
+```
+
+```{r}
+plot(previsao$pred-2*previsao$se)
+```
+
+```{r}
+#previsão de 4 meses
+previsao <- predict(x.fit,n.ahead=4)
+plot(previsao$pred)
+```
+```{r}
+#2.9. Gráfico usando o comando:
+require(forecast)
+previsao <- forecast (x.fit)
+plot(forecast(x.fit))
+```
+

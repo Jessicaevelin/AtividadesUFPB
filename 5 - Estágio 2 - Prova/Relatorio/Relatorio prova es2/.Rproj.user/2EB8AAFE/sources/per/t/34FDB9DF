@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1584281787834.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "698182100",
+    "id" : "34FDB9DF",
+    "lastKnownWriteTime" : 1584293963,
+    "last_content_update" : 1584293963415,
+    "path" : "D:/Google Drive/6 - R/5 - Estágio 2 - Prova/Relatorio/Relatorio prova es2/relatorio es2.Rmd",
+    "project_path" : "relatorio es2.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "111,32",
+        "scrollLine" : "110",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
